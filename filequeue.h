@@ -16,13 +16,17 @@ typedef struct thefileQueue{
 
 void initializeFileQueue(fileQueue *queue);
 
-void addFilename(fileQueue *queue, char name[100]);
+void addFilename(fileQueue *queue, char newname[]);
 
 void printFileQueue(fileQueue *queue);
 
 void freeFileQueue(fileQueue *queue);
 
 char* peek(fileQueue *queue);
+
+int is_file_set(fileQueue *queue, char const *newname);
+
+
 
 
 #endif

@@ -11,7 +11,11 @@ void initializeFileQueue(fileQueue *queue) {
 	queue->end = NULL;
 }
 
-void addFilename(fileQueue *queue, char name[100]) {
+void addFilename(fileQueue *queue, char newname[]) {
+	
+
+
+	
     /* Allocate memory for a new file name */
     fileName *newFileName = (fileName *)malloc(sizeof(fileName));
     if (newFileName == NULL) {
@@ -20,14 +24,19 @@ void addFilename(fileQueue *queue, char name[100]) {
     }
 
     /* Copy the name into the structure */
-    strncpy(newFileName->name, name, sizeof(newFileName->name));
-    newFileName->name[sizeof(newFileName->name)] = '\0';
-
+  
+    strncpy(newFileName->name, newname, strlen(newname));
+    
+    
+    newFileName->name[strlen(newname)] = '\0';
+    
+  	
+	
 
     newFileName->next = NULL;
 
     /* Update the queue */
-    if (queue->end == NULL) {
+    if (queue->end == NULL || queue->start == NULL) {
         /* If the queue is empty, set both start and end to the new name */
         queue->start = queue->end = newFileName;
     } else {
@@ -35,9 +44,12 @@ void addFilename(fileQueue *queue, char name[100]) {
         queue->end->next = newFileName;
         queue->end = newFileName;
     }
+    
 }
 
 void printFileQueue(fileQueue *queue) {
+	printf("fronta souboru\n");
+	
     fileName *current = queue->start;
     while (current != NULL) {
         printf("%s\n", current->name);
@@ -68,10 +80,29 @@ char* peek(fileQueue *queue) {
 
         /* Move to the next element in the queue */
        
+        
         queue->start = queue->start->next;
-
+	
         return firstname;
     } else {
         return NULL;  /* Indicate that the queue is empty */
     }
 }
+
+int is_file_set(fileQueue *queue, char const *newname){
+	fileName *current = queue->start;
+		
+	while(current != NULL){
+		if(strcmp(current->name,newname) == 0){
+			return 1;
+		}
+		else{
+			current = current->next;
+		}
+	} 
+	return 0;
+}
+
+
+
+
