@@ -3,15 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "filequeue.h"
+#include "comment.h"
 
-
+/**
+ * init fronty
+ */
 void initializeFileQueue(fileQueue *queue) {
     queue->start = NULL;
 	queue->end = NULL;
 }
 
-void addFilename(fileQueue *queue, char newname[]) {
+void addFilename(fileQueue *queue, char *newname) {
 	
 
 
@@ -47,16 +51,23 @@ void addFilename(fileQueue *queue, char newname[]) {
     
 }
 
+/**
+ * vypsani fronty
+ */
 void printFileQueue(fileQueue *queue) {
 	printf("fronta souboru\n");
 	
     fileName *current = queue->start;
     while (current != NULL) {
+    	
         printf("%s\n", current->name);
         current = current->next;
     }
 }
 
+/**
+ * uvgv
+ */
 void freeFileQueue(fileQueue *queue) {
     fileName *current = queue->start;
     while (current != NULL) {
@@ -66,9 +77,13 @@ void freeFileQueue(fileQueue *queue) {
     }
 
     /* Reset the queue */
-    initializeQueue(queue);
+    initializeFileQueue(queue);
 }
 
+
+/**
+ * vybere prvni soubor
+ */
 char* peek(fileQueue *queue) {
     if (queue->start != NULL) {
         /* Allocate memory for the name */
@@ -89,11 +104,17 @@ char* peek(fileQueue *queue) {
     }
 }
 
-int is_file_set(fileQueue *queue, char const *newname){
+/**
+ * je soubor ulozen
+ */
+int is_file_set(fileQueue *queue, char const *newname) {
 	fileName *current = queue->start;
 		
 	while(current != NULL){
 		if(strcmp(current->name,newname) == 0){
+			/*
+			printf("%s , %s\n", current->name , newname);
+			*/
 			return 1;
 		}
 		else{
@@ -102,7 +123,7 @@ int is_file_set(fileQueue *queue, char const *newname){
 	} 
 	return 0;
 }
-
+ 
 
 
 

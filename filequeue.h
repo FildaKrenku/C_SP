@@ -4,6 +4,7 @@
 #ifndef __FILEQUEUE__
 #define __FILEQUEUE__
 
+
 typedef struct thefileName{
 	char name[100];
 	struct thefileName *next;
@@ -16,15 +17,34 @@ typedef struct thefileQueue{
 
 void initializeFileQueue(fileQueue *queue);
 
-void addFilename(fileQueue *queue, char newname[]);
 
+/**
+ * pridani souboru do
+ * fronty a
+ */
+void addFilename(fileQueue *queue, char *newname);
+
+/**
+ * vypise frontu souboru
+ */
 void printFileQueue(fileQueue *queue);
 
+/**
+ * uvoleneni fronty
+ */
 void freeFileQueue(fileQueue *queue);
 
+/**
+ * vybere soubor
+ */
 char* peek(fileQueue *queue);
 
+/**
+ * je soubor ulozedddddn
+ */
 int is_file_set(fileQueue *queue, char const *newname);
+
+
 
 
 

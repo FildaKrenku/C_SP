@@ -2,32 +2,42 @@
 
 #ifndef __COMMENT__
 #define __COMMENT__
-                                                                                                                                                                                                      
-typedef struct thecom{
+
+/**
+ * struktura komentare
+ */
+typedef struct thecom {
 	char *text;
-	struct thecom *next;	
+	
+
 	
 	char *head;
 	char *description;
-	char *param;
 	char *author;
+	char *param;
 	char *details;
-	char *retun_val;
+	char *return_val;
 	char *version;
 	char *brief;
 	
+	struct thecom *next;	
+	
 } comment;
+
 
 /**
  * struktura fornty
  */
-typedef struct comqueue{
+typedef struct comqueue {
 	struct thecom *start;
 	struct thecom *end;
 } commentQueue;
 
 
-void init(commentQueue *queue);
+/**
+ * kokotbbb
+ */
+void initializeQueue(commentQueue *queue);
 
 void add(commentQueue *queue, char  *text);
 
@@ -35,7 +45,20 @@ void printComments(commentQueue *queue);
 
 void freeQueue(commentQueue *queue);
 
-void process(comment *currnet);
+/**
+ * process
+ */
+void process(comment *current);
+
+/**
+ * zprocesuje veechny komenty
+ */
+void processComments(commentQueue *queue);
+
+/**
+ * spojeni komenraru
+ */
+void mergeComments(commentQueue *queue);
 
 
 
