@@ -7,8 +7,17 @@
 #include "comment.h"
 #include "check.h"
 #include "modifier.h"
+#include "printer.h"
 
-
+#define ARGUMENTY "Argumenty: "
+#define RET "Návratová Hodnota: "
+#define POPIS "Popis: "
+#define AUTOR "Autor: "
+#define VERZE "Verze: "
+#define BRIEF "Brief: "
+#define DET "Detaily: "
+#define FUNC "Funkce "
+#define STRUCT "Struktura "
 
 
 
@@ -16,33 +25,59 @@
  * kokot
  */
 void initializeQueue(commentQueue *queue) {
+	if(!queue) {
+		printf("wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
     queue->start = NULL;
     queue->end = NULL;
 }
 
-void add(commentQueue *queue, char  *text) {
+
+/**
+ * kokot
+ *
+ * @param char *text kokot
+ * @param commentQueue *queue fronta
+ */
+void add(commentQueue *queue, char textt[]) {
+	if(!queue || !textt){
+		printf("wrong arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	
     comment *newComment = (comment *)malloc(sizeof(comment));
     
     if (newComment == NULL) {
         printf("Chyba: Nepodarilo se alokovat pamat pro komentar.\n");
         exit(EXIT_FAILURE);
     }
-
-    /* Kopírování textu komentáře do nově alokované paměti */
-    newComment->text = strdup(text);
     
-    
+    newComment->text = NULL;
     newComment->author = NULL;
     newComment->param = NULL;
     newComment->brief = NULL;
     newComment->description = NULL;
     newComment->details = NULL;
     newComment->head = NULL;
+    newComment->struct_head = NULL;
     newComment->return_val = NULL;
     newComment->version = NULL;
     
-    
     newComment->next = NULL;
+    
+
+    /* Kopírování textu komentáře do nově alokované paměti */
+    newComment->text = strdup(textt);
+    if (newComment->text == NULL) {
+	    printf("Error: Failed to allocate memory for comment text.\n");
+	    free(newComment);
+	    exit(EXIT_FAILURE);
+    }
+
+    
 
 
     /* Pokud je fronta prázdná, nastavíme frontu tak, aby obsahovala pouze nový komentář */
@@ -58,45 +93,109 @@ void add(commentQueue *queue, char  *text) {
   
 }
 
+
 void processComments(commentQueue *queue) {
+	
+	if(!queue){
+		printf("wrong argument");
+		exit(EXIT_FAILURE);
+	}
+	
 	comment *current = queue->start;
     while (current != NULL) {
 		process(current);
+		
 		current = current->next;
+		
 	}
+
 }
 
 
 
-/* Výpis komentářů ve frontě */
-void printComments(commentQueue *queue) {
-	
+void printComments(FILE *file, commentQueue *queue) {
     comment *current = queue->start;
-    while (current != NULL) {
     
+    paramLine *par;
+    returnLine *ret;
+    
+    while (current != NULL) {
     	
+    	if(current->struct_head != NULL){
+    		print_subsubsection(file, "Struktura: ",current->struct_head);
+    		/*
+    		printf("STRUKTURA: %s\n",current->struct_head);
+    		*/		
+		}
+    
  
 		if(current->head != NULL){
+			print_subsubsection(file, FUNC, current->head);
 			printf("FUNKCE: %s\n",current->head);
 			
-			if(current->description != NULL){
-				printf("POPIS: %s\n",current->description);
-			}
-			if(current->param != NULL){
-				printf("PARAM:%s\n",current->param);
+			if(current->param != NULL) {
+				par = current->param;
+				printf("ARGUMENTY:");
+				fprintf(file, "\\textbf{%s}", ARGUMENTY);
+    			while (par != NULL) {
+    				printf("%s", par->line);
+    				
+    				printf_verb(file, par->line);
+    				
+        			par = par->next;
+    			}
+    			fprintf(file, "\\\\\n");
+    			print_space(file);
+    			printf("\n");
 			}
 			if(current->return_val != NULL){
-				printf("Return:%s\n",current->return_val);	
+				ret = current->return_val;
+				/*
+				fprintf(file, "\\textbf{%s}", RET);
+				printf_verb(file, current->return_val);
+				fprintf(file, "\\\\\n");
+    			print_space(file);
+    			*/
+				printf("RETURN:");
+					while (ret != NULL) {
+    				
+    				printf("%s", ret->line);
+    				/*
+    				printf_verb(file, ret->line);
+    				*/
+        			ret = ret->next;
+    			}
+    			printf("\n");
+			}
+			if(current->description != NULL){
+				print_textbf(file, POPIS, current->description);
+				print_space(file);
+				
+				printf("POPIS: %s\n",current->description);
 			}
 			if(current->brief != NULL){
+				print_textbf(file, BRIEF, current->brief);
+				print_space(file);
+				
 				printf("Brief:%s\n",current->brief);	
 			}
+			if(current->details != NULL){
+				print_textbf(file, DET, current->details);
+				print_space(file);
+				
+				printf("Version:%s\n",current->details);	
+			}
 			if(current->author != NULL){
+				print_textbf(file, AUTOR, current->author);
+				print_space(file);
 				printf("Autor:%s\n",current->author);	
 			}
 			if(current->version != NULL){
+				print_textbf(file, VERZE, current->version);
+				print_space(file);
 				printf("Version:%s\n",current->version);	
 			}
+			
 			printf("\n");
 		}
 		
@@ -111,24 +210,60 @@ void printComments(commentQueue *queue) {
 void freeQueue(commentQueue *queue) {
     comment *current = queue->start;
     comment *next;
+    paramLine *par;
+    paramLine *next_par;
+    returnLine *ret;
+    returnLine *next_ret;
+    
     while (current != NULL) {
+    	
         next = current->next;
-        
-        free(current->text);
-       	free(current->author);
-       	free(current->param);
-       	free(current->brief);
-       	free(current->description);
-       	free(current->details);
+    	
+       	
+       	par = current->param;
+    	while (par != NULL) {
+        	next_par = par->next;
+        	free(par->line);
+        	free(par);
+        	par = next_par;
+    	}
+    
+    	ret = current->return_val;
+    	while (ret != NULL) {
+        	next_ret = ret->next;
+        	free(ret->line);
+        	free(ret);
+        	ret = next_ret;
+    	}
+    	
+    	free(current->brief);
+    	free(current->version);
+    	free(current->details);
+    	free(current->author);
+    	free(current->description);	
+       	free(current->struct_head);
        	free(current->head);
-       	free(current->return_val);
-       	free(current->version);
+       	free(current->text);
+       	
+       	
+    	
+    	
+    	
+    	
+    	
+    	
+        
         free(current);
         
+      
+        
         current = next;
+        
     }
     /* Nastavení fronty na prázdnou */
+    
     initializeQueue(queue);
+    
 }
 
 
@@ -140,24 +275,23 @@ void freeQueue(commentQueue *queue) {
 void process(comment *current) {
 	
 	int dest = 0;
+
 	
-	char *copy = (char *)malloc(strlen(current->text) + 1);
+	if (!current || !current->text) {
+		printf("wrong argument");
+		exit(EXIT_FAILURE);
+	}
 	
-	if (copy == NULL) {
-        printf("Chyba při alokaci paměti.\n");
+
+	
+	char* copy = strdup(current->text);
+    if (copy == NULL) {
+        fprintf(stderr, "Memory allocation failed for copy.\n");
         exit(EXIT_FAILURE);
     }
-    
- 	strncpy(copy, current->text, strlen(current->text));
- 	copy[strlen(current->text)] = '\0';
  	
- 	
- 
- 	
- 	
-	
-	
-	 char *line = strtok(copy, "\n");
+
+	char *line = strtok(copy, "\n");
 	
   	
     while (line != NULL) {
@@ -169,143 +303,142 @@ void process(comment *current) {
 		char *zav = strchr(line, '@');
 
 		char *func_head = strstr(line, ") {");
-		char *struct_head = strstr(line, "typedef struct");
+		char *struct_head = strstr(line, "typedef struct ");
 		char *H_file_head = strstr(line, ");");
 	
      
-        if(zav != NULL) {
+        if (zav != NULL) {
         	char *space = strchr(zav, ' ');
         	
-        	if(strstr(zav, "param")) {
-        		
-        		int currentLength = current->param ? strlen(current->param) : 0;
-        		int newLength = currentLength + strlen(space) + 1;
-        		
-        		
-        		if(strchr(space, '.')){
-        			newLength += 1;
-				}
-				
-		        if (current->param) {
-		        	current->param = (char *)realloc(current->param, newLength);
-		        	current->param[currentLength + 1] = '\0';
-		        	
-		        } else {
-		        	current->param = (char *)malloc(newLength);
-		            current->param[0] = '\0';
-				}
-		        
-		        if (current->param) {
-		            /* Concatenate the content of d to the existing description */
-		            strncat(current->param, space, strlen(space));
-		
-		            /* Ensure null-termination */
-		            current->param[newLength] = '\0';
-		               
-		        } else {
-		            printf("Memory allocation/reallocation for description failed.\n");
-		            exit(EXIT_FAILURE);
-		        }
-				
-        		
-			} else if(strstr(zav,"details")) {
-				if(current->details = (char *) malloc(strlen(space) + 1)) {
+        	if (strstr(zav, "param")) {
+        		add_param(current, space);
+			} else if (strstr(zav,"details")) {
+				current->details = (char *) malloc(strlen(space) + 1);
+				if(current->details) {
         			strncpy(current->details, space, strlen(space));
         			current->details[strlen(space)] = '\0';
+				} else {
+					printf("memory alocation failed\n");
+					exit(EXIT_FAILURE);
 				}
-			} else if(strstr(zav,"brief")) {
-				if(current->brief = (char *) malloc(strlen(space) + 1)) {
+			} else if (strstr(zav,"brief")) {
+				current->brief = (char *) malloc(strlen(space) + 1);
+				if(current->brief) {
         			strncpy(current->brief, space, strlen(space));
         			current->brief[strlen(space)] = '\0';
 				}
-			} else if(strstr(zav,"return")) {
-				if(current->return_val = (char *) malloc(strlen(space) + 1)) {
-        			strncpy(current->return_val, space, strlen(space));
-        			current->return_val[strlen(space)] = '\0';
+				else {
+					printf("memory alocation failed\n");
+					exit(EXIT_FAILURE);
 				}
-			} else if(strstr(zav,"author")) {
-				if(current->author = (char *) malloc(strlen(space) + 1)) {
+			} else if (strstr(zav,"return")) {
+				add_return(current, space);
+			} else if (strstr(zav,"author")) {
+				current->author = (char *) malloc(strlen(space) + 1);
+				if(current->author) {
         			strncpy(current->author, space, strlen(space));
         			current->author[strlen(space)] = '\0';	
 				}
-			} else if(strstr(zav,"version")) {
-				if(current->version = (char *) malloc(strlen(space) + 1)) {
+				else {
+					printf("memory alocation failed\n");
+					exit(EXIT_FAILURE);
+				}
+			} else if (strstr(zav,"version")) {
+				current->version = (char *) malloc(strlen(space) + 1);
+				if(current->version) {
         			strncpy(current->version, space, strlen(space));
         			current->version[strlen(space)] = '\0';	
 				}
+				else {
+					printf("memory alocation failed\n");
+					exit(EXIT_FAILURE);
+				}
 			}
-        	
-        	
-		} else if(func_head) {
-			if(current->head = (char *) malloc(strlen(line) - 1)) {
-				strncpy(current->head, line, strlen(line) - 1);
-				current->head[strlen(line) - 2] = '\0';
+		} else if (func_head != NULL) {
+			
+			current->head = (char *) malloc(strlen(trim_white_spaces(line)) - 1);
+			if(current->head) {
+				strncpy(current->head, trim_white_spaces(line), strlen(trim_white_spaces(line)) - 1);
+				current->head[strlen(trim_white_spaces(line)) - 2] = '\0';
+			}
+			else {
+				printf("memory alocation failed\n");
+				exit(EXIT_FAILURE);
+			}
+				
+		} else if (struct_head != NULL) {
+			current->struct_head = (char *) malloc(strlen(struct_head + 15) - 1);
+			if(current->struct_head) {
+				strncpy(current->struct_head, trim_white_spaces(struct_head + 15), strlen(struct_head + 15) - 1);
+				current->struct_head[strlen(struct_head + 15) - 1] = '\0';
+			}
+			else {
+				printf("memory alocation failed\n");
+				exit(EXIT_FAILURE);
 			}	
-		} else if(struct_head){
-			/*
-			if(current->head = (char *) malloc(strlen(line) - 1)) {
-				strncpy(current->head, line, strlen(line) - 1);
-				current->head[strlen(line) - 1] = '\0';
+			
+		} else if (H_file_head != NULL) {
+			current->head = (char *) malloc(strlen(trim_white_spaces(line)) - 1);
+			if(current->head) {
+				strncpy(current->head, trim_white_spaces(line), strlen(trim_white_spaces(line)) - 1);
+				current->head[strlen(trim_white_spaces(line)) - 1] = '\0';
 			}	
-			*/
-		} else if(H_file_head){
-			if(current->head = (char *) malloc(strlen(line) - 1)) {
-				strncpy(current->head, line, strlen(line) - 1);
-				current->head[strlen(line) - 1] = '\0';
-			}	
-		} else if(linecheck(line, " *") || linecheck(line, "/**") || linecheck(line, "/*!")){
+			else {
+				printf("memory alocation failed\n");
+				exit(EXIT_FAILURE);
+			}
+		} else if (linecheck(line, " *") || linecheck(line, "/**") || linecheck(line, "/*!")) {
 			dest = 1;  
-		} else if(dest == 1 && !linecheck(line, " *")){
+		} else if (dest == 1 && !linecheck(line, " *")) {
 			char *d = strstr(line," * ");
-			if(d){
+			if (d != NULL) {
 					
+				
 				remove_spaces(d);
+				
+				
 			
 				int currentLength = current->description ? strlen(current->description) : 0;
-        		int newLength = currentLength + strlen(d) + 2;
-		
-		        if (current->description) {
+    			int newLength = currentLength + strlen(d) + 2;
+	
+		        if (current->description != NULL) {
 		        	current->description = (char *)realloc(current->description, newLength);
-		        	current->description[currentLength + 1] = '\0';
-		        	current->description[currentLength] = ' ';
+		        	if (current->description != NULL) {
+		        		strcat(current->description, " ");
+		        		strcat(current->description, d);
+		        		current->description[newLength - 1] = '\0';
+					}
+					else {
+						printf("Memory reallocation for description failed.\n");
+		            	exit(EXIT_FAILURE);
+					}
 		        } else {
 		        	current->description = (char *)malloc(newLength);
-		            current->description[0] = '\0';
+		        	if (current->description) {
+		        		strcpy(current->description, d);
+		        		current->description[newLength - 1] = '\0';
+					}
+					else {
+						printf("Memory allocation for description failed.\n");
+		            	exit(EXIT_FAILURE);
+					}
+		           
 				}
-		        
-		        if (current->description) {
-		            /* Concatenate the content of d to the existing description */
-		            strncat(current->description, d, strlen(d));
-		
-		            /* Ensure null-termination */
-		            current->description[newLength] = '\0';
-		               
-		        } else {
-		            printf("Memory allocation/reallocation for description failed.\n");
-		            exit(EXIT_FAILURE);
-		        }
+			
+				
+				
+				
 			}
 		} 
 			
-		 
-		
-		
-		
-		
-		
-		
-	    
         line = strtok(NULL, "\n"); 
-        
-      
-        
-        
-        
+          
 	}
 	
 	
 	
 	free(copy);
+
 	
 }
 
@@ -316,6 +449,13 @@ void mergeComments(commentQueue *queue) {
     comment *current = queue->start;
     comment *prev;
     comment *compare;
+    paramLine *par;
+    paramLine *par_line;
+    paramLine *next_par;
+    
+    returnLine *ret;
+    returnLine *ret_line;
+    returnLine *next_ret;
 
 
     while (current != NULL) {
@@ -330,13 +470,11 @@ void mergeComments(commentQueue *queue) {
 	        /* Iterate through each field of the comments and merge if different */
 	        if (current->head != NULL && compare->head != NULL && strcmp(current->head, compare->head) == 0) {
 	        	
-	        		
+	        		/*
 	        		printf(" cur %s com %s \n",current->head, compare->head);
 	        		printf(" cur %i com %i \n",strlen(current->head), strlen(compare->head));
-	        	
-	        	
-	        	
-	            if (compare->description != NULL) {
+	        		*/
+	             if (compare->description != NULL) {
 	                if (current->description == NULL) {
 	                    current->description = strdup(compare->description);
 	                } else {
@@ -358,86 +496,188 @@ void mergeComments(commentQueue *queue) {
 	                if (current->author == NULL) {
 	                    current->author = strdup(compare->author);
 	                } else {
-	                    strcat(current->author, " "); 
-	                    strcat(current->author, compare->author);
+	                	if(strcmp(current->author, compare->author) != 0){
+	                		current->author = (char *)realloc(current->author, strlen(current->author) + strlen(compare->author) + 1);
+	                		
+	                		if(current->author != NULL){
+	                			strcat(current->author, " ");
+	                    		strcat(current->author, compare->author);	
+							}
+							else{
+								printf("realokace pameti selhala");
+								exit(EXIT_FAILURE);
+							}	
+						}
 	                }
 	            }
+	            
 	            if (compare->param != NULL) {
-	                if (current->param == NULL) {
-	                    current->param = strdup(compare->param);
-	                } else {
-	                    strcat(current->param, " "); 
-	                    strcat(current->param, compare->param);
-	                }
+	            	if (current->param == NULL) {
+	            		par = compare->param;
+				    	while (par != NULL) {
+				        	add_param(current, par->line);
+				        	par = par->next;
+				    	}
+	                } 
+					else {
+	                	paramLine *cur_par; 
+	                	paramLine *com_par = compare->param;
+	                	
+	                	while (com_par != NULL) {
+	                		cur_par = current->param;
+				        	int found = 0; 
+				
+					        while (cur_par != NULL) {
+					            if (strcmp(cur_par->line, com_par->line) == 0) {
+					                found = 1; /* Parametr byl nalezen v current */
+					                break;
+					            }
+					
+					            cur_par = cur_par->next;
+					        }
+				
+					        /* Pokud parametr nebyl nalezen v current, přidáme ho */
+					        if (found == 0) {
+					            add_param(current, com_par->line);
+					        }
+					
+					        com_par = com_par->next;
+    					}
+							
+	                }  
 	            }
+	            
 	            if (compare->details != NULL) {
 	                if (current->details == NULL) {
 	                    current->details = strdup(compare->details);
 	                } else {
-	                    strcat(current->details, " "); 
-	                    strcat(current->details, compare->details);
+	                	if(strcmp(current->details, compare->details) != 0){
+	                		current->details = (char *)realloc(current->details, strlen(current->details) + strlen(compare->details) + 1);
+	                		
+	                		if(current->details != NULL){
+	                			strcat(current->details, " ");
+	                    		strcat(current->details, compare->details);	
+							}
+							else{
+								printf("realokace pameti selhala");
+								exit(EXIT_FAILURE);
+							}	
+						}
 	                }
 	            }
+	            
 	            if (compare->return_val != NULL) {
 	                if (current->return_val == NULL) {
-	                    current->return_val = strdup(compare->return_val);
-	                } else {
-	                    strcat(current->return_val, " "); 
-	                    strcat(current->return_val, compare->return_val);
-	                }
+	            		ret = compare->return_val;
+				    	while (ret != NULL) {
+				        	add_return(current, ret->line);
+				        	ret = ret->next;
+				    	}
+	                } 
+					else {
+	                	returnLine *cur_ret; 
+	                	returnLine *com_ret = compare->return_val;
+	                	
+	                	while (com_ret != NULL) {
+	                		cur_ret = current->return_val;
+				        	int found_ret = 0; 
+				
+					        while (cur_ret != NULL) {
+					            if (strcmp(cur_ret->line, com_ret->line) == 0) {
+					                found_ret = 1; 
+					                break;
+					            }
+					
+					            cur_ret = cur_ret->next;
+					        }
+				
+					        
+					        if (found_ret == 0) {
+					            add_return(current, com_ret->line);
+					        }
+					
+					        com_ret = com_ret->next;
+    					}
+							
+	                }  
 	        	}
+	        	
 	            if (compare->version != NULL) {
 	                if (current->version == NULL) {
 	                    current->version = strdup(compare->version);
 	                } else {
-	                    strcat(current->version, " ");
-	                    strcat(current->version, compare->version);
+	                	if(strcmp(current->version, compare->version) != 0){
+	                		current->version = (char *)realloc(current->version, strlen(current->version) + strlen(compare->version) + 1);
+	                		
+	                		if(current->version != NULL){
+	                			strcat(current->version, " ");
+	                    		strcat(current->version, compare->version);	
+							}
+							else{
+								printf("realokace pameti selhala");
+								exit(EXIT_FAILURE);
+							}	
+						}
 	                }
 	            }
 	            if (compare->brief != NULL) {
 	                if (current->brief == NULL) {
 	                    current->brief = strdup(compare->brief);
 	                } else {
-	                    strcat(current->brief, " "); 
-	                    strcat(current->brief, compare->brief);
+	                	if(strcmp(current->brief, compare->brief) != 0){
+	                		current->brief = (char *)realloc(current->brief, strlen(current->brief) + strlen(compare->brief) + 1);
+	                		
+	                		if(current->brief != NULL){
+	                			strcat(current->brief, " ");
+	                    		strcat(current->brief, compare->brief);	
+							}
+							else{
+								printf("realokace pameti selhala");
+								exit(EXIT_FAILURE);
+							}	
+						}
 	                }
 	            }
 	            
 	          	comment *temp = compare->next;
 				prev->next = temp;
+				
+				
 
                 /* Free the memory of the merged comment */
-                free(compare->text);
-                free(compare->head);
-                free(compare->description);
-                free(compare->author);
-                free(compare->param);
-                free(compare->details);
-                free(compare->return_val);
-                free(compare->version);
-                free(compare->brief);
+		    	par_line = compare->param;
+		    	while (par_line != NULL) {
+		        	next_par = par_line->next;
+		        	free(par_line->line);
+		        	free(par_line);
+		        	par_line = next_par;
+		    	}
+		    
+		    	ret_line = compare->return_val;
+		    	while (ret_line != NULL) {
+		        	next_ret = ret_line->next;
+		        	free(ret_line->line);
+		        	free(ret_line);
+		        	ret_line = next_ret;
+		    	}
+		    	
+		    	free(compare->brief);
+		    	free(compare->version);
+		    	free(compare->details);
+		    	free(compare->author);
+		    	free(compare->description);	
+		       	free(compare->struct_head);
+		       	free(compare->head);
+		       	free(compare->text);
+		    	
+		    	
+                
                 free(compare);
                 
-                 compare = temp;
+                compare = temp;
 	
 				
-	            /*
-	            comment *temp = compare;
-	
-	          	free(temp->text);
-	            free(temp->head);
-	            free(temp->description);
-	            free(temp->author);
-	            free(temp->param);
-	            free(temp->details);
-	            free(temp->return_val);
-	            free(temp->version);
-	            free(temp->brief);
-	            free(temp);
-	            
-	            current = current->next;
-				compare = compare->next;
-				*/
+	         
 	            
 	            
 	        } 
@@ -450,6 +690,113 @@ void mergeComments(commentQueue *queue) {
     	current = current->next;
     }
 }
+
+void add_param(comment *current, const char *line) {
+	paramLine *newParamLine;
+	
+	if(!current || !line) {
+		printf("Wrong arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	
+	/* Allocate memory for the new line */
+    newParamLine = malloc(sizeof(paramLine));
+    if (newParamLine == NULL) {
+        /* Handle memory allocation failure */
+        printf("Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+    newParamLine->line = NULL;
+    newParamLine->next = NULL;
+
+    /* Allocate memory for the new line content */
+    newParamLine->line = (char *) malloc(strlen(line) + 1);
+    if (newParamLine->line == NULL) {
+        /* Handle memory allocation failure */
+        printf("Memory allocation failed\n");
+        free(newParamLine);
+        exit(EXIT_FAILURE);
+    }
+
+    /* Copy the new line to the allocated memory */
+    strncpy(newParamLine->line, line, strlen(line));
+    newParamLine->line[strlen(line)] = '\0';
+
+    /* Add the new line to the linked list */
+    paramLine *last = current->param;
+    if (last == NULL) {
+        /* If the list is empty, set the newParamLine as the first element */
+        current->param = newParamLine;
+    } else {
+        /* Otherwise, traverse to the end of the list and add the newParamLine */
+        while (last->next != NULL) {
+            last = last->next;
+        }
+        last->next = newParamLine;
+    }
+}
+
+
+void add_return(comment *current, const char *line) {
+	returnLine *newReturn;
+	returnLine *last;
+	
+	
+	if(!current || !line) {
+		printf("Wrong arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	newReturn = malloc(sizeof(returnLine));
+	
+	if (newReturn == NULL) {
+        /* Handle memory allocation failure */
+        printf("Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+    newReturn->line = NULL;
+    newReturn->next = NULL;
+	
+	newReturn->line = (char *) malloc(strlen(line) + 1);
+    if (newReturn->line == NULL) {
+        /* Handle memory allocation failure */
+        printf("Memory allocation failed\n");
+        free(newReturn);
+        exit(EXIT_FAILURE);
+    }
+
+    /* Copy the new line to the allocated memory */
+    strncpy(newReturn->line, line, strlen(line));
+    newReturn->line[strlen(line)] = '\0';
+    
+    
+    /* Add the new line to the linked list */
+    last = current->return_val;
+    if (last == NULL) {
+        /* If the list is empty, set the newParamLine as the first element */
+        current->return_val = newReturn;
+    } else {
+        /* Otherwise, traverse to the end of the list and add the newParamLine */
+        while (last->next != NULL) {
+            last = last->next;
+        }
+        last->next = newReturn;
+    }
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
 
 
 

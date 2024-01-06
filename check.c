@@ -8,14 +8,14 @@
 #include "check.h"
 
 
-/**
+/** 
  * Funkce pro kontrolu bilich zanku
  * kokotpica
  */
 int linecheck(const char *str, const char *prefix) {
-    size_t prefixLen = strlen(prefix);
-    size_t strLen = strlen(str);
-    size_t i;
+    int prefixLen = strlen(prefix);
+    int strLen = strlen(str);
+    int i;
 
     if (strLen < prefixLen) {
         return 0;  
@@ -55,11 +55,3 @@ int is_file_exist(char *filename){
 	
 }
 
-
-
-void printStringWithWhitespace(const char *str) {
-	int i;
-    for (i = 0; str[i] != '\0'; i++) {
-        printf("Char: %c ASCII: %d\n", str[i], str[i]);
-    }
-}

@@ -1,0 +1,94 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[IL2]{fontenc}
+\usepackage[czech]{babel}
+\begin{document}
+\section{Programátorskáčřšěůřž dokumentace}
+\subsection{Modul \texttt{ccdoc.c}}
+\subsubsection{Funkce \texttt{void findComments(commentQueue *queue, char *filename)}}
+\textbf{Argumenty: }\verb"commentQueue *queue" -- fronta souboru. \verb"char * filename" -- jmeno souboru. \\
+\par\noindent
+\textbf{Popis: }Funkce pro nacteni souboru a zpracovani komentaru a kokotu\\
+\par\noindent
+\textbf{Brief: } najde komentare.\\
+\par\noindent
+\subsubsection{Funkce \texttt{int main(int argc, char *argv[])}}
+\textbf{Argumenty: }\verb"int argc" -- pocet argumentu. \verb"char * argv[]" -- pole argumentu. \\
+\par\noindent
+\textbf{Popis: }main kokotpica\\
+\par\noindent
+\textbf{Autor: } \textcopyright{} Jan Naj\\
+\par\noindent
+\textbf{Verze: } 1.0\\
+\par\noindent
+\subsection{Modul \texttt{filequeue}}
+\subsubsection{Funkce \texttt{void addFilename(fileQueue *queue, char *newname)}}
+\textbf{Popis: }pridani souboru do fronty a\\
+\par\noindent
+\subsubsection{Funkce \texttt{void printFileQueue(fileQueue *queue)}}
+\textbf{Popis: }vypise frontu souboru vypsani fronty\\
+\par\noindent
+\subsubsection{Funkce \texttt{void freeFileQueue(fileQueue *queue)}}
+\textbf{Popis: }uvoleneni fronty uvgv\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* peek(fileQueue *queue)}}
+\textbf{Popis: }vybere soubor vybere prvni soubor\\
+\par\noindent
+\subsubsection{Funkce \texttt{int is\_file\_set(fileQueue *queue, char const *newname)}}
+\textbf{Popis: }je soubor ulozedddddn je soubor ulozen\\
+\par\noindent
+\subsubsection{Funkce \texttt{void initializeFileQueue(fileQueue *queue)}}
+\textbf{Popis: }init fronty\\
+\par\noindent
+\subsection{Modul \texttt{comment}}
+\subsubsection{Struktura: \texttt{thecom }}
+\subsubsection{Struktura: \texttt{comqueue }}
+\subsubsection{Funkce \texttt{void initializeQueue(commentQueue *queue)}}
+\textbf{Argumenty: }\verb"commentQueue * queue" -- fronta. \\
+\par\noindent
+\textbf{Popis: }kokotbbb kokot\\
+\par\noindent
+\subsubsection{Funkce \texttt{void add(commentQueue *queue, char textt[])}}
+\textbf{Argumenty: }\verb"commentQueue *queue" -- fronta. \verb"char *text" -- kokot. \\
+\par\noindent
+\textbf{Popis: }prida komentaaa kokot\\
+\par\noindent
+\subsubsection{Funkce \texttt{void printComments(FILE *file, commentQueue *queue)}}
+\textbf{Argumenty: }\verb"commentQueue * queue" -- fronta. \verb"FIlE *file" -- vystupni soubor. \\
+\par\noindent
+\textbf{Popis: }kokot\\
+\par\noindent
+\subsubsection{Funkce \texttt{void process(comment *current)}}
+\textbf{Popis: }kokotbbb process com\\
+\par\noindent
+\subsubsection{Funkce \texttt{void processComments(commentQueue *queue)}}
+\textbf{Argumenty: }\verb"commentQueue * queue" -- fronta souborufewefwfew. \\
+\par\noindent
+\textbf{Popis: }zprocesuje veechny komenty\\
+\par\noindent
+\subsubsection{Funkce \texttt{void mergeComments(commentQueue *queue)}}
+\textbf{Popis: }spojeni komenraru\\
+\par\noindent
+\subsection{Modul \texttt{check}}
+\subsubsection{Funkce \texttt{int is\_file\_exist(char *filename)}}
+\textbf{Popis: }existuje soubor\\
+\par\noindent
+\subsubsection{Funkce \texttt{int linecheck(const char *str, const char *prefix)}}
+\textbf{Popis: }Funkce pro kontrolu bilich zanku kokotpica\\
+\par\noindent
+\subsection{Modul \texttt{modifier}}
+\subsubsection{Funkce \texttt{char* extractExtension(char *filename)}}
+\textbf{Argumenty: }\verb"char *filename" -- jmeno souboru. \\
+\par\noindent
+\textbf{Popis: }kokotipica kokotipicaddd\\
+\par\noindent
+\subsubsection{Funkce \texttt{void remove\_spaces(char *text)}}
+\textbf{Popis: }funkce pro smazani bilich znaku. kokotpica\\
+\par\noindent
+\subsection{Modul \texttt{printer}}
+\subsubsection{Funkce \texttt{void print\_module(FILE *file, char *module)}}
+\textbf{Argumenty: }\verb"char * module" -- nazev modulu co ma byt vypsan. \\
+\par\noindent
+\textbf{Popis: }Funkce pro vypsani modulu\\
+\par\noindent
+\end{document}

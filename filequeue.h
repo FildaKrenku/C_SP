@@ -6,7 +6,7 @@
 
 
 typedef struct thefileName{
-	char name[100];
+	char *name;
 	struct thefileName *next;
 } fileName;
 

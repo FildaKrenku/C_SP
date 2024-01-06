@@ -7,6 +7,10 @@
 
 
 #include "modifier.h"
+
+#define WIN_PATH '\\'
+#define LIN_PATH '/'
+#define PREFIX_FILE '"'
  
  
 /** 
@@ -14,6 +18,12 @@
  * kokotpica
  */ 
 void remove_spaces(char *text) {
+	if(!text) {
+		printf("wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	
     int length = strlen(text);
     int i;
 
@@ -25,19 +35,27 @@ void remove_spaces(char *text) {
             i--;
         }
     }
+    
 }
 
 
 
 char* removeQuotes(char *str) {
-    int len = strlen(str);
-  
-    char *result = (char *)malloc(len + 1);  
-    char prefix_file = '"';
-    
-    
-    int j = 0;  /* Index pro nový řetězec */
+    int len;
+    int j = 0; 
     int i;
+    char *result;
+    
+    if(!str){
+    	printf("Wrong arguments\n");
+    	exit(EXIT_FAILURE);
+	}
+    
+    len = strlen(str);
+  
+
+    
+    result = (char *)malloc(len + 1); 
 
     if (result == NULL) {
         printf("Memory allocation failed.\n");
@@ -45,7 +63,7 @@ char* removeQuotes(char *str) {
     }
     
     for ( i = 0; i < len-1; ++i) {
-        if (str[i] != prefix_file) {
+        if (str[i] != PREFIX_FILE) {
             result[j] = str[i];
             j++;
         }
@@ -59,10 +77,17 @@ char* removeQuotes(char *str) {
 
 
 char* extract_path(char *filename) {
-	char *lastslash = strrchr(filename, '\\');
-    if (lastslash) {
+	if(!filename){
+		printf("wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	
+	char *lastbslash = strrchr(filename, WIN_PATH);
+	char *lastslash = strrchr(filename, LIN_PATH);
+    if (lastbslash) {
         /* Získat délku cesty (počítáno od začátku řetězce) */
-        size_t path_len = lastslash - filename;
+        int path_len = lastbslash - filename;
 
         /* Vytvořit nový řetězec pro cestu s dynamickou alokací paměti */
         char *path = (char *)malloc(path_len + 1); /* +1 pro null-terminátor */
@@ -80,7 +105,28 @@ char* extract_path(char *filename) {
 		*/
 
         return path;
-    } else {
+    } else if (lastslash) {
+    	/* Získat délku cesty (počítáno od začátku řetězce) */
+        int path_len = lastslash - filename;
+
+        /* Vytvořit nový řetězec pro cestu s dynamickou alokací paměti */
+        char *path = (char *)malloc(path_len + 1); /* +1 pro null-terminátor */
+
+        if (path == NULL) {
+            printf("Chyba: Nepodarilo se alokovat pamat pro vystupni cestu.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        strncpy(path, filename, path_len);
+        path[path_len] = '\0';
+		
+		/*
+        printf("Extrahovana cesta k souboru: %s\n", path);
+		*/
+
+        return path;
+    	
+	} else {
         return NULL; /* Pokud zpětné lomítko není nalezeno, vraťte NULL */
     }	
 
@@ -88,8 +134,15 @@ char* extract_path(char *filename) {
 
 
 char* connect_path(char *path, char *filename) {
+	
+	if(!path || !filename){
+		printf("wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	
 	/* Zkontrolovat, zda cesta obsahuje zpětné lomítko na konci */
-    size_t path_len = strlen(path);
+    int path_len = strlen(path);
     if (path_len > 0 && path[path_len - 1] != '\\') {
         /* Pokud není, přidat zpětné lomítko */
         path_len++; 
@@ -117,8 +170,12 @@ char* connect_path(char *path, char *filename) {
 
 
 
-
-char* extractExtension(char *filename){
+/**
+ * kokotipicaddd
+ *
+ * @param char *filename jmeno souboru
+ */
+char* extractExtension(char *filename) {
 	
 	char *result = (char *) malloc(strlen(filename) - 1);
 	
@@ -131,7 +188,26 @@ char* extractExtension(char *filename){
 }
 
 
+char* trim_white_spaces(char *input) {
+	
+    if (input == NULL) {
+        return NULL;  /* Handle NULL input */
+    }
 
+    /* Trim leading white characters */
+    while (isspace(*input)) {
+        input++;
+    }
+
+    /* Trim trailing white characters */
+    char *end = input + strlen(input) - 1;
+    while (end > input && isspace(*end)) {
+        end--;
+    }
+    *(end + 1) = '\0';  /* Null-terminate the trimmed string */
+
+    return input;
+}
 
 
 

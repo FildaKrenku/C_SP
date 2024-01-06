@@ -23,13 +23,13 @@ OverrideOutputName=
 HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
-CommandLine=
+CommandLine=ccdoc.c
 Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;0;0;6;0;0;0
-UnitCount=9
+CompilerSettings=1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;1;0;0;0;6;0;0;0
+UnitCount=11
 
 [VersionInfo]
 Major=1
@@ -132,6 +132,26 @@ BuildCmd=
 
 [Unit9]
 FileName=modifier.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit10]
+FileName=printer.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit11]
+FileName=printer.h
 CompileCpp=0
 Folder=
 Compile=1

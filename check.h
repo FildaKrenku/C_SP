@@ -6,12 +6,12 @@
 
 int linecheck(const char *str, const char *prefix);
 
+/**
+ * existuje soubor
+ */
 int is_file_exist(char *filename);
 
-/**
- * negrpicus
- */
-void printStringWithWhitespace(const char *str);
+                
 
 
 

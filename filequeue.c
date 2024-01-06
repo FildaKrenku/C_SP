@@ -11,13 +11,21 @@
  * init fronty
  */
 void initializeFileQueue(fileQueue *queue) {
+	if (!queue) {
+        printf("wrong arguments");
+        exit(EXIT_FAILURE);
+    }
+    
     queue->start = NULL;
 	queue->end = NULL;
 }
 
 void addFilename(fileQueue *queue, char *newname) {
 	
-
+	if(!queue || !newname){
+		printf("wrong arguments");
+		exit(EXIT_FAILURE);
+	}
 
 	
     /* Allocate memory for a new file name */
@@ -26,19 +34,23 @@ void addFilename(fileQueue *queue, char *newname) {
         printf("Memory allocation failed.\n");
         exit(EXIT_FAILURE);
     }
-
-    /* Copy the name into the structure */
-  
-    strncpy(newFileName->name, newname, strlen(newname));
     
-    
-    newFileName->name[strlen(newname)] = '\0';
-    
-  	
-	
-
+    newFileName->name = NULL;
     newFileName->next = NULL;
 
+    /* Copy the name into the structure */
+    newFileName->name = (char *) malloc(strlen(newname) + 1);
+    
+    if (newFileName->name == NULL) {
+    	printf("Memory allocation failed.\n");
+    	free(newFileName);
+        exit(EXIT_FAILURE);	
+	}
+    
+  
+    strncpy(newFileName->name, newname, strlen(newname));
+    newFileName->name[strlen(newname)] = '\0';
+    
     /* Update the queue */
     if (queue->end == NULL || queue->start == NULL) {
         /* If the queue is empty, set both start and end to the new name */
@@ -48,6 +60,8 @@ void addFilename(fileQueue *queue, char *newname) {
         queue->end->next = newFileName;
         queue->end = newFileName;
     }
+    
+    
     
 }
 
@@ -63,15 +77,23 @@ void printFileQueue(fileQueue *queue) {
         printf("%s\n", current->name);
         current = current->next;
     }
+    
 }
 
 /**
  * uvgv
  */
 void freeFileQueue(fileQueue *queue) {
+	if(!queue) {
+		printf("wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	
     fileName *current = queue->start;
     while (current != NULL) {
         fileName *next = current->next;
+        free(current->name);
         free(current);
         current = next;
     }
@@ -85,6 +107,12 @@ void freeFileQueue(fileQueue *queue) {
  * vybere prvni soubor
  */
 char* peek(fileQueue *queue) {
+	if(!queue) {
+		printf("Wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	
     if (queue->start != NULL) {
         /* Allocate memory for the name */
         char *firstname = strdup(queue->start->name);
@@ -95,8 +123,13 @@ char* peek(fileQueue *queue) {
 
         /* Move to the next element in the queue */
        
+        fileName *temp = queue->start;
         
         queue->start = queue->start->next;
+        
+        
+        free(temp->name);
+        free(temp);
 	
         return firstname;
     } else {
@@ -112,9 +145,6 @@ int is_file_set(fileQueue *queue, char const *newname) {
 		
 	while(current != NULL){
 		if(strcmp(current->name,newname) == 0){
-			/*
-			printf("%s , %s\n", current->name , newname);
-			*/
 			return 1;
 		}
 		else{
