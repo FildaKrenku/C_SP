@@ -41,6 +41,13 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 	
 	char line[LINE_LEN];
 	
+	/* argument check */
+	if( !fqueue || !usedFiles || !filename) {
+		printf("Wrong arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	/* open file check */
 	FILE *file = fopen(filename, "r");
 	
 	if (file == NULL) {
@@ -49,23 +56,22 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 	}
 	
 
-	
-	
-	
+	/* iterating through file and finding includes and then once a .h file is find .c file is made from it*/
 	while (fgets(line, sizeof(line), file)) {
-		inc = strstr(line, PREFIX_INCLUDE);
+		inc = strstr(line, PREFIX_INCLUDE); /* include found */
 		if (inc) {
-			file_s = strchr(inc, PREFIX_FILE);
+			file_s = strchr(inc, PREFIX_FILE); /* quotes found */
 			if (file_s){
 				file_e1 = strstr(file_s, EX1);
 				file_e2 = strstr(file_s, EX2);
-				if (file_e1 || file_e2) {
+				if (file_e1 || file_e2) { 
 					
 					
 					
 					
-					final = removeQuotes(file_s);
+					final = removeQuotes(file_s); /* removing quotes from filename */
 					
+					/* extracting path from filename and if paht is not null then connet it to founded file and checking if file exist*/
 					if (final) {
 						path = extract_path(filename);
 						if (path) {
@@ -89,7 +95,7 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 				
 					
 					
-                    
+                    /* creating of .c file from .h file */
                     if(file_e2){
                     	
                     	
@@ -110,7 +116,7 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 						
 						free(final);
 						
-						
+						/* same like with the .h file */
 						if (path) {
 							full_path = connect_path(path, dotC_file);
 							if (is_file_set(usedFiles, full_path) == 0 && is_file_exist(full_path) == 1) {
@@ -136,7 +142,7 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 	}
 	
 	
-	
+	/* file closing*/
 	fclose(file);
 	
 	
@@ -156,24 +162,27 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
  * @return void nic.
  */
 void findComments(commentQueue *queue, char *filename) {
+	char line[LINE_LEN];
+    char commentBuffer[5 * LINE_LEN];
+    int insideComment = 0;
+    int store_last = 0;
 	
+	
+	/* argument check */
 	if (!queue || !filename) {
 		printf("Wrong arguments of findComments");
 		exit(EXIT_FAILURE);
 	}
 	
-	
+	/* open file check */
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Can not open the inpitfile %s.\n", filename);
         exit(2);  
     }
 
-    char line[LINE_LEN];
-    char commentBuffer[5 * LINE_LEN];
-    int insideComment = 0;
-    int store_last = 0;
-
+    
+	/* iterating through file and finding comments */
     while (fgets(line, sizeof(line), file)) {
     	
     	
@@ -196,6 +205,7 @@ void findComments(commentQueue *queue, char *filename) {
         
     }
 	
+	/* closing of file */
     fclose(file);
 }
 
@@ -206,12 +216,12 @@ void findComments(commentQueue *queue, char *filename) {
 
 
 /**
- * main kokotpica
+ * main function of the program
  *
  * @param int argc pocet argumentu
  * @param char * argv[] pole argumentu.
  *
- * @author \textcopyright{} Jan Naj
+ * @author \textcopyright{} Filip Křenek
  * @version 1.0
  */
 int main(int argc, char *argv[]) {
@@ -227,8 +237,10 @@ int main(int argc, char *argv[]) {
     char *dotC_file;
     
     int inputLen;
-    char *lastslash;
+    char *lastslash = NULL;
+    char *lastbslash = NULL;
     char *dotPosition;
+    char *path;
     
     commentQueue *queue;
     fileQueue *fqueue;
@@ -239,11 +251,11 @@ int main(int argc, char *argv[]) {
     char *file_we1;
 	char *file_we2;	
     
-    
-	
+    int exit_code = 0;
+	int cur_exit = 0;
 
 	
-    /* input handling */
+    /* inputfile handling */
     if (argc < 2) {
         printf("Inputfile in missing.\n");
         exit(1);  
@@ -255,37 +267,55 @@ int main(int argc, char *argv[]) {
     dotC = strstr(inputFile,EX1);
     dotH = strstr(inputFile,EX2);
      
+    /* checking for .c or .h ending */
     if(!dotC && !dotH){
     	printf("Wrong extension of the Inputfile\n");
     	exit(1);
 	}
 	
+	/* checking file existantace */
 	if(is_file_exist(inputFile) == 0){
 		printf("Inputfile does not exists\n");
 		exit(2);
 	}
     
 
-	
+	/* outputfile handling */
     if (argc == 3) {
     	outputFile = argv[2];
     	
     	dotTex = strstr(outputFile, EX3);
-    	
+    	/* checking for .tex ending  */
     	if(!dotTex){
     		printf("Wrong extension of the Outputfile\n");
     		exit(2);
 		}	
 	} else {
-		
+		/* makeing -doc.tex file */
 		dotPosition = strrchr(inputFile, '.');
 	
-		char *path = extract_path(inputFile);
+		path = extract_path(inputFile);
 		
+	
 
 		if(path){
-			lastslash = strrchr(inputFile, '\\') + 1;
-			inputLen = strlen(lastslash);	
+			lastslash = strrchr(inputFile, '/') + 1;
+			lastbslash = strrchr(inputFile, '\\') + 1;
+			
+			
+		
+			
+			
+			if (lastbslash) {
+			
+				inputLen = strlen(lastbslash);	
+			}
+			else if (lastslash) {
+				
+				inputLen = strlen(lastslash);	
+				
+			}
+	
 		} else{
 			inputLen = strlen(inputFile);
 		}
@@ -305,11 +335,18 @@ int main(int argc, char *argv[]) {
 	    	
 	
 	        
-	        if(path){
-	        	strncpy(outputFile, lastslash, inputLen - 2);
+	        if (path) {
+	        	if (lastbslash) {
+	        		strncpy(outputFile, lastbslash, inputLen - 2);	
+				}
+				else if (lastslash) {
+					strncpy(outputFile, lastslash, inputLen - 2);	
+				}
+	        	
 	        	outputFile[inputLen - 2] = '\0';
 	        	strcat(outputFile, TEX_EX);
 	        	outputFile = connect_path(path, outputFile);
+	        
 			}
 			else{
 				strncpy(outputFile, inputFile, inputLen - 2);
@@ -327,9 +364,7 @@ int main(int argc, char *argv[]) {
 	    free(path);
 	}
 
-    
-	printf("%s\n",inputFile);
-	printf("%s\n",outputFile);
+
 	
 	
   
@@ -391,6 +426,7 @@ int main(int argc, char *argv[]) {
 		
 	}
     
+    /* tex file open check */
     tex_file = fopen(outputFile, "w");
     
     if(!tex_file){
@@ -398,35 +434,25 @@ int main(int argc, char *argv[]) {
     	exit(2);
 	}
 	
-	print_section(tex_file);
-
+	/* initial print */
+	print_section(tex_file);	
 	
-	
+	/* iterating through filequeue */
 	while (fqueue->start != NULL) {
-	
-		/*
-		printFileQueue(fqueue);
-		*/
+		
+		/* peek first filename and find files in that file */
 		newname = peek(fqueue);
-	
-		
-		
-		
-		   
-	
-		
-		
-		
+			
 		findFiles(fqueue, usedFiles, newname);
 		
-		
+		/* checking if next filename has same name  */
 		if (fqueue->start != NULL) {
 			
 			file_we1 = extractExtension(newname);
 			file_we2 = extractExtension(fqueue->start->name);
 			
 		
-		
+			/* if yes peek that file and merge comments of both files */
 			if(strcmp(file_we1, file_we2) == 0) {
 			
 				findComments(queue, newname);
@@ -441,14 +467,14 @@ int main(int argc, char *argv[]) {
 				
 				mergeComments(queue);
 				
-				printComments(tex_file, queue);
-				
+				cur_exit = printComments(tex_file, queue);
+			
 				freeQueue(queue);
 				
 				free(nextname);
 				free(newname);
 				
-			}
+			} /* if not normally find comments and print them */
 			else {
 				
 				print_module(tex_file, newname);
@@ -457,17 +483,14 @@ int main(int argc, char *argv[]) {
 			
 				processComments(queue);
 		
-				printComments(tex_file, queue);
+				cur_exit = printComments(tex_file, queue);
 			
 				freeQueue(queue);
 			
 				free(newname);
 			
 			}
-			
-		
-			
-		}
+		} /* normally find comments and print them */
 		else {
 			print_module(tex_file, newname);
 			
@@ -475,25 +498,29 @@ int main(int argc, char *argv[]) {
 		
 			processComments(queue);
 		
-			printComments(tex_file, queue);
+			cur_exit = printComments(tex_file, queue);
 		
 			freeQueue(queue);
 		
 			free(newname);
 		}
 		
+		if (exit_code <= cur_exit) {
+			exit_code = cur_exit;
+		}
 		
 	}
 	
 	
-	
+	/* final print to the tex file */
 	print_end(tex_file);
 	
+	/* close of the tex file */ 
 	fclose(tex_file);
 	
 	
 	
-	
+	/* freeing memory */
 	if(argc == 2) {
 		free(outputFile);	
 	}
@@ -509,11 +536,9 @@ int main(int argc, char *argv[]) {
   	free(queue);
   	free(fqueue);
   	free(usedFiles);
-  
-    
-   
+
    	printf("hotovo");
-    return 0;
+    return exit_code;
 }
 
 

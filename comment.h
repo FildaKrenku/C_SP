@@ -3,13 +3,17 @@
 #ifndef __COMMENT__
 #define __COMMENT__
 
-
+/**
+ * strukture of param line 
+ */
 typedef struct theparam {
     char *line;
     struct theparam *next;
 } paramLine;
 
-
+/**
+ * structure of return line
+ */
 typedef struct thereturn {
 	char *line;
 	struct thereturn *next;
@@ -17,7 +21,7 @@ typedef struct thereturn {
 
 
 /**
- * struktura komentare
+ * structure of comment 
  */
 typedef struct thecom {
 	char *text;
@@ -40,7 +44,7 @@ typedef struct thecom {
 
 
 /**
- * struktura fornty
+ * structure of comment queue
  */
 typedef struct comqueue {
 	struct thecom *start;
@@ -69,7 +73,7 @@ void add(commentQueue *queue, char textt[]);
  * @param commentQueue * queue fronta
  * @param FIlE *file vystupni soubor
  */
-void printComments(FILE *file, commentQueue *queue);
+int printComments(FILE *file, commentQueue *queue);
 
 void freeQueue(commentQueue *queue);
 

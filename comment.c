@@ -9,6 +9,7 @@
 #include "modifier.h"
 #include "printer.h"
 
+/* defining of constats */
 #define ARGUMENTY "Argumenty: "
 #define RET "Návratová Hodnota: "
 #define POPIS "Popis: "
@@ -25,11 +26,13 @@
  * kokot
  */
 void initializeQueue(commentQueue *queue) {
+	/* argument check */
 	if(!queue) {
 		printf("wrong arguments");
 		exit(EXIT_FAILURE);
 	}
 	
+	/* initializing of pointers of queue */
     queue->start = NULL;
     queue->end = NULL;
 }
@@ -42,19 +45,24 @@ void initializeQueue(commentQueue *queue) {
  * @param commentQueue *queue fronta
  */
 void add(commentQueue *queue, char textt[]) {
+	comment *newComment;
+	
+	/* argument check */
 	if(!queue || !textt){
 		printf("wrong arguments\n");
 		exit(EXIT_FAILURE);
 	}
 	
-	
-    comment *newComment = (comment *)malloc(sizeof(comment));
+	/* allcating memory for new comment */
+    newComment = (comment *)malloc(sizeof(comment));
     
+    /* memory allocation check */
     if (newComment == NULL) {
         printf("Chyba: Nepodarilo se alokovat pamat pro komentar.\n");
         exit(EXIT_FAILURE);
     }
     
+    /* secureing every pointer is null */
     newComment->text = NULL;
     newComment->author = NULL;
     newComment->param = NULL;
@@ -69,8 +77,10 @@ void add(commentQueue *queue, char textt[]) {
     newComment->next = NULL;
     
 
-    /* Kopírování textu komentáře do nově alokované paměti */
+    /* copiing comment text to the new comment */
     newComment->text = strdup(textt);
+    
+    /* checking if copiing was sucessfull */
     if (newComment->text == NULL) {
 	    printf("Error: Failed to allocate memory for comment text.\n");
 	    free(newComment);
@@ -80,12 +90,12 @@ void add(commentQueue *queue, char textt[]) {
     
 
 
-    /* Pokud je fronta prázdná, nastavíme frontu tak, aby obsahovala pouze nový komentář */
+    /* if queue is empty put the new comment to the start  */
     if (queue->end == NULL) {
         queue->start = newComment;
         queue->end = newComment;
     } else {
-        /* Jinak přidáme komentář na konec fronty */
+        /* if not put the comment to the end */
         queue->end->next = newComment;
         queue->end = newComment;
     }
@@ -95,13 +105,16 @@ void add(commentQueue *queue, char textt[]) {
 
 
 void processComments(commentQueue *queue) {
+	comment *current;
 	
+	/* argument check */
 	if(!queue){
 		printf("wrong argument");
 		exit(EXIT_FAILURE);
 	}
 	
-	comment *current = queue->start;
+	/* iterating through queue and process every comment */
+	current = queue->start;
     while (current != NULL) {
 		process(current);
 		
@@ -113,12 +126,24 @@ void processComments(commentQueue *queue) {
 
 
 
-void printComments(FILE *file, commentQueue *queue) {
-    comment *current = queue->start;
-    
-    paramLine *par;
+int printComments(FILE *file, commentQueue *queue) {
+	comment *current;
+	paramLine *par;
     returnLine *ret;
+    int exit_code = 0;
+    int cur_exit;
+	
+	/* argument check */
+	if(!queue || !file){
+		printf("wrong argument");
+		exit(EXIT_FAILURE);
+	}
+	
+	
+    current = queue->start;
     
+    
+    /* iterating thourgh the queue and printing parts of the comment */
     while (current != NULL) {
     	
     	if(current->struct_head != NULL){
@@ -128,7 +153,7 @@ void printComments(FILE *file, commentQueue *queue) {
     		*/		
 		}
     
- 
+ 	
 		if(current->head != NULL){
 			print_subsubsection(file, FUNC, current->head);
 			printf("FUNKCE: %s\n",current->head);
@@ -197,24 +222,45 @@ void printComments(FILE *file, commentQueue *queue) {
 			}
 			
 			printf("\n");
+			
+			if ((current->description == NULL || current->brief == NULL || current->return_val == NULL) && current->struct_head == NULL) {
+				cur_exit = 3;
+			}
+			else {
+				cur_exit = 0;
+			}
+			
+			if (exit_code <= cur_exit) {
+				exit_code = cur_exit;
+			}
+			
 		}
 		
 	
         current = current->next;
     }
     
+    
+    return exit_code;
 }
 
 
 /* Uvolnění paměti použité pro komentáře ve frontě */
 void freeQueue(commentQueue *queue) {
-    comment *current = queue->start;
+	comment *current;
     comment *next;
     paramLine *par;
     paramLine *next_par;
     returnLine *ret;
     returnLine *next_ret;
-    
+	/* argument check */
+	if(!queue){
+		printf("wrong argument");
+		exit(EXIT_FAILURE);
+	}
+	
+    current = queue->start;
+    /* iterating through the queue and freeing every parh of the comment */
     while (current != NULL) {
     	
         next = current->next;
@@ -245,22 +291,12 @@ void freeQueue(commentQueue *queue) {
        	free(current->head);
        	free(current->text);
        	
-       	
-    	
-    	
-    	
-    	
-    	
-    	
-        
         free(current);
-        
-      
-        
+
         current = next;
         
     }
-    /* Nastavení fronty na prázdnou */
+    /* setting the queue to null */
     
     initializeQueue(queue);
     
@@ -273,42 +309,51 @@ void freeQueue(commentQueue *queue) {
  * process com
  */
 void process(comment *current) {
+	char *line;
+	char* copy;
+	char *func_head;
+	char *struct_head;
+	char *H_file_head;
+	char *zav;
+	char *space;
+	char *dest_wws;
 	
 	int dest = 0;
 
-	
+	/* argument check */
 	if (!current || !current->text) {
 		printf("wrong argument");
 		exit(EXIT_FAILURE);
 	}
 	
 
+	/* making copy od current text */
+	copy = strdup(current->text);
 	
-	char* copy = strdup(current->text);
+	/* checking if copiing was sucessfull */
     if (copy == NULL) {
         fprintf(stderr, "Memory allocation failed for copy.\n");
         exit(EXIT_FAILURE);
     }
  	
-
-	char *line = strtok(copy, "\n");
+	/* tokenizing copy to line with new line symbol */
+	line = strtok(copy, "\n");
 	
-  	
+  	/* iterating through each line of copy */
     while (line != NULL) {
-    	/*
-    	printf("%s\n",line);
-    	*/
     	
- 		
-		char *zav = strchr(line, '@');
-
-		char *func_head = strstr(line, ") {");
-		char *struct_head = strstr(line, "typedef struct ");
-		char *H_file_head = strstr(line, ");");
+    	
+ 		/* finding of @ */
+		zav = strchr(line, '@');
 	
-     
+		/* findinf of function heads of structure heads */
+		func_head = strstr(line, ") {");
+		struct_head = strstr(line, "typedef struct ");
+		H_file_head = strstr(line, ");");
+	
+     	/* processing @ lines */
         if (zav != NULL) {
-        	char *space = strchr(zav, ' ');
+        	space = strchr(zav, ' ');
         	
         	if (strstr(zav, "param")) {
         		add_param(current, space);
@@ -354,6 +399,7 @@ void process(comment *current) {
 					exit(EXIT_FAILURE);
 				}
 			}
+			/* procesing heads */
 		} else if (func_head != NULL) {
 			
 			current->head = (char *) malloc(strlen(trim_white_spaces(line)) - 1);
@@ -387,25 +433,26 @@ void process(comment *current) {
 				printf("memory alocation failed\n");
 				exit(EXIT_FAILURE);
 			}
+			/* procesing lines of description  */
 		} else if (linecheck(line, " *") || linecheck(line, "/**") || linecheck(line, "/*!")) {
 			dest = 1;  
 		} else if (dest == 1 && !linecheck(line, " *")) {
-			char *d = strstr(line," * ");
-			if (d != NULL) {
+			dest_wws = strstr(line," * ");
+			if (dest_wws != NULL) {
 					
 				
-				remove_spaces(d);
+				remove_spaces(dest_wws);
 				
 				
 			
 				int currentLength = current->description ? strlen(current->description) : 0;
-    			int newLength = currentLength + strlen(d) + 2;
+    			int newLength = currentLength + strlen(dest_wws) + 2;
 	
 		        if (current->description != NULL) {
 		        	current->description = (char *)realloc(current->description, newLength);
 		        	if (current->description != NULL) {
 		        		strcat(current->description, " ");
-		        		strcat(current->description, d);
+		        		strcat(current->description, dest_wws);
 		        		current->description[newLength - 1] = '\0';
 					}
 					else {
@@ -415,7 +462,7 @@ void process(comment *current) {
 		        } else {
 		        	current->description = (char *)malloc(newLength);
 		        	if (current->description) {
-		        		strcpy(current->description, d);
+		        		strcpy(current->description, dest_wws);
 		        		current->description[newLength - 1] = '\0';
 					}
 					else {
@@ -430,13 +477,13 @@ void process(comment *current) {
 				
 			}
 		} 
-			
+		/* moving to next line */	
         line = strtok(NULL, "\n"); 
           
 	}
 	
 	
-	
+	/* freeing copy */
 	free(copy);
 
 	
@@ -446,7 +493,7 @@ void process(comment *current) {
 
 void mergeComments(commentQueue *queue) {
 	
-    comment *current = queue->start;
+    comment *current;
     comment *prev;
     comment *compare;
     paramLine *par;
@@ -456,8 +503,21 @@ void mergeComments(commentQueue *queue) {
     returnLine *ret;
     returnLine *ret_line;
     returnLine *next_ret;
+    
+    returnLine *cur_ret; 
+	returnLine *com_ret;
+	paramLine *cur_par; 
+	paramLine *com_par;
+    
+    /* arguments check */
+    if (!current ) {
+		printf("wrong argument");
+		exit(EXIT_FAILURE);
+	}
+    
+    current = queue->start;
 
-
+	/* iterating through queue and finding comments with same head */
     while (current != NULL) {
     	
     	compare = current->next;
@@ -474,6 +534,11 @@ void mergeComments(commentQueue *queue) {
 	        		printf(" cur %s com %s \n",current->head, compare->head);
 	        		printf(" cur %i com %i \n",strlen(current->head), strlen(compare->head));
 	        		*/
+	        		
+	        	/* if heads are same comparing each part of both comments */
+	        	/* if one of part is null part of second comment will be copied to the first one */
+	        	/* if both are not null then will both be comapred to each other and if they are same nothing will happed but if not then the second one will be copied to the first one */
+	        	/* same for every part of comment */
 	             if (compare->description != NULL) {
 	                if (current->description == NULL) {
 	                    current->description = strdup(compare->description);
@@ -510,7 +575,7 @@ void mergeComments(commentQueue *queue) {
 						}
 	                }
 	            }
-	            
+	            /* with parts like param and return_val it iterating through the return_val and param but the functionality is same */
 	            if (compare->param != NULL) {
 	            	if (current->param == NULL) {
 	            		par = compare->param;
@@ -520,8 +585,7 @@ void mergeComments(commentQueue *queue) {
 				    	}
 	                } 
 					else {
-	                	paramLine *cur_par; 
-	                	paramLine *com_par = compare->param;
+	                	com_par = compare->param;
 	                	
 	                	while (com_par != NULL) {
 	                		cur_par = current->param;
@@ -575,8 +639,7 @@ void mergeComments(commentQueue *queue) {
 				    	}
 	                } 
 					else {
-	                	returnLine *cur_ret; 
-	                	returnLine *com_ret = compare->return_val;
+	                	com_ret = compare->return_val;
 	                	
 	                	while (com_ret != NULL) {
 	                		cur_ret = current->return_val;
@@ -686,7 +749,7 @@ void mergeComments(commentQueue *queue) {
 	          	compare = compare->next;
 	        }
         }
-        
+        /* move to next comment */
     	current = current->next;
     }
 }
@@ -694,6 +757,7 @@ void mergeComments(commentQueue *queue) {
 void add_param(comment *current, const char *line) {
 	paramLine *newParamLine;
 	
+	/* argument check */
 	if(!current || !line) {
 		printf("Wrong arguments\n");
 		exit(EXIT_FAILURE);
@@ -703,7 +767,6 @@ void add_param(comment *current, const char *line) {
 	/* Allocate memory for the new line */
     newParamLine = malloc(sizeof(paramLine));
     if (newParamLine == NULL) {
-        /* Handle memory allocation failure */
         printf("Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
@@ -712,8 +775,9 @@ void add_param(comment *current, const char *line) {
 
     /* Allocate memory for the new line content */
     newParamLine->line = (char *) malloc(strlen(line) + 1);
+    
+    /* checking if alocating was successfull */
     if (newParamLine->line == NULL) {
-        /* Handle memory allocation failure */
         printf("Memory allocation failed\n");
         free(newParamLine);
         exit(EXIT_FAILURE);
@@ -726,10 +790,10 @@ void add_param(comment *current, const char *line) {
     /* Add the new line to the linked list */
     paramLine *last = current->param;
     if (last == NULL) {
-        /* If the list is empty, set the newParamLine as the first element */
+       
         current->param = newParamLine;
     } else {
-        /* Otherwise, traverse to the end of the list and add the newParamLine */
+        
         while (last->next != NULL) {
             last = last->next;
         }
@@ -742,25 +806,28 @@ void add_return(comment *current, const char *line) {
 	returnLine *newReturn;
 	returnLine *last;
 	
-	
+	/* argument check */
 	if(!current || !line) {
 		printf("Wrong arguments\n");
 		exit(EXIT_FAILURE);
 	}
 	
+	/* Allocate memory for the new line */
 	newReturn = malloc(sizeof(returnLine));
 	
 	if (newReturn == NULL) {
-        /* Handle memory allocation failure */
+       
         printf("Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
     newReturn->line = NULL;
     newReturn->next = NULL;
-	
+    
+	/* Allocate memory for the new line content */
 	newReturn->line = (char *) malloc(strlen(line) + 1);
+	
+	/* checking if alocating was successfull */
     if (newReturn->line == NULL) {
-        /* Handle memory allocation failure */
         printf("Memory allocation failed\n");
         free(newReturn);
         exit(EXIT_FAILURE);
@@ -774,10 +841,10 @@ void add_return(comment *current, const char *line) {
     /* Add the new line to the linked list */
     last = current->return_val;
     if (last == NULL) {
-        /* If the list is empty, set the newParamLine as the first element */
+        
         current->return_val = newReturn;
     } else {
-        /* Otherwise, traverse to the end of the list and add the newParamLine */
+       
         while (last->next != NULL) {
             last = last->next;
         }

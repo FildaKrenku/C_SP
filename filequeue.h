@@ -4,12 +4,17 @@
 #ifndef __FILEQUEUE__
 #define __FILEQUEUE__
 
-
+/**
+ * structure of filename
+ */
 typedef struct thefileName{
 	char *name;
 	struct thefileName *next;
 } fileName;
 
+/**
+ * structure of file queue
+ */
 typedef struct thefileQueue{
 	struct thefileName *start;
 	struct thefileName *end;

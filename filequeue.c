@@ -11,8 +11,9 @@
  * init fronty
  */
 void initializeFileQueue(fileQueue *queue) {
+	/* arguments check */
 	if (!queue) {
-        printf("wrong arguments");
+        printf("Wrong arguments");
         exit(EXIT_FAILURE);
     }
     
@@ -21,8 +22,8 @@ void initializeFileQueue(fileQueue *queue) {
 }
 
 void addFilename(fileQueue *queue, char *newname) {
-	
-	if(!queue || !newname){
+	/* arguments check */
+	if (!queue || !newname) {
 		printf("wrong arguments");
 		exit(EXIT_FAILURE);
 	}
@@ -30,6 +31,8 @@ void addFilename(fileQueue *queue, char *newname) {
 	
     /* Allocate memory for a new file name */
     fileName *newFileName = (fileName *)malloc(sizeof(fileName));
+    
+    /* checking if allcating was successfull */
     if (newFileName == NULL) {
         printf("Memory allocation failed.\n");
         exit(EXIT_FAILURE);
@@ -41,6 +44,7 @@ void addFilename(fileQueue *queue, char *newname) {
     /* Copy the name into the structure */
     newFileName->name = (char *) malloc(strlen(newname) + 1);
     
+    /* checking if allcating was successfull */
     if (newFileName->name == NULL) {
     	printf("Memory allocation failed.\n");
     	free(newFileName);
@@ -69,9 +73,16 @@ void addFilename(fileQueue *queue, char *newname) {
  * vypsani fronty
  */
 void printFileQueue(fileQueue *queue) {
-	printf("fronta souboru\n");
+	fileName *current;
 	
-    fileName *current = queue->start;
+	/* argument check */
+	if (!queue ) {
+		printf("Wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	
+    current = queue->start;
     while (current != NULL) {
     	
         printf("%s\n", current->name);
@@ -84,15 +95,19 @@ void printFileQueue(fileQueue *queue) {
  * uvgv
  */
 void freeFileQueue(fileQueue *queue) {
-	if(!queue) {
-		printf("wrong arguments");
+	fileName *current;
+	fileName *next;
+	
+	/* argument check */
+	if (!queue) {
+		printf("Wrong arguments");
 		exit(EXIT_FAILURE);
 	}
 	
 	
-    fileName *current = queue->start;
+    current = queue->start;
     while (current != NULL) {
-        fileName *next = current->next;
+        next = current->next;
         free(current->name);
         free(current);
         current = next;
@@ -107,7 +122,11 @@ void freeFileQueue(fileQueue *queue) {
  * vybere prvni soubor
  */
 char* peek(fileQueue *queue) {
-	if(!queue) {
+	char *firstname;
+	fileName *temp;
+	
+	/* argument check */
+	if (!queue) {
 		printf("Wrong arguments");
 		exit(EXIT_FAILURE);
 	}
@@ -115,7 +134,7 @@ char* peek(fileQueue *queue) {
 	
     if (queue->start != NULL) {
         /* Allocate memory for the name */
-        char *firstname = strdup(queue->start->name);
+        firstname = strdup(queue->start->name);
         if (firstname == NULL) {
             printf("Memory allocation failed.\n");
             exit(EXIT_FAILURE);
@@ -123,11 +142,11 @@ char* peek(fileQueue *queue) {
 
         /* Move to the next element in the queue */
        
-        fileName *temp = queue->start;
+        temp = queue->start;
         
         queue->start = queue->start->next;
         
-        
+        /* free the first name in the queue */
         free(temp->name);
         free(temp);
 	
@@ -141,13 +160,22 @@ char* peek(fileQueue *queue) {
  * je soubor ulozen
  */
 int is_file_set(fileQueue *queue, char const *newname) {
-	fileName *current = queue->start;
-		
-	while(current != NULL){
-		if(strcmp(current->name,newname) == 0){
+	fileName *current;
+	
+	/* arguments check */
+	if (!queue || !newname) {
+		printf("Wrong arguments");
+		exit(EXIT_FAILURE);
+	}
+	
+	current = queue->start;
+	
+	/* iterating through the queue and trying to find the same file */	
+	while (current != NULL) {
+		if (strcmp(current->name,newname) == 0) {
 			return 1;
 		}
-		else{
+		else {
 			current = current->next;
 		}
 	} 

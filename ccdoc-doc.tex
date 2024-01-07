@@ -15,13 +15,15 @@
 \subsubsection{Funkce \texttt{int main(int argc, char *argv[])}}
 \textbf{Argumenty: }\verb"int argc" -- pocet argumentu. \verb"char * argv[]" -- pole argumentu. \\
 \par\noindent
-\textbf{Popis: }main kokotpica\\
+\textbf{Popis: }main function of the program\\
 \par\noindent
-\textbf{Autor: } \textcopyright{} Jan Naj\\
+\textbf{Autor: } \textcopyright{} Filip Křenek\\
 \par\noindent
 \textbf{Verze: } 1.0\\
 \par\noindent
 \subsection{Modul \texttt{filequeue}}
+\subsubsection{Struktura: \texttt{thefileName}}
+\subsubsection{Struktura: \texttt{thefileQueue}}
 \subsubsection{Funkce \texttt{void addFilename(fileQueue *queue, char *newname)}}
 \textbf{Popis: }pridani souboru do fronty a\\
 \par\noindent
@@ -41,6 +43,8 @@
 \textbf{Popis: }init fronty\\
 \par\noindent
 \subsection{Modul \texttt{comment}}
+\subsubsection{Struktura: \texttt{theparam }}
+\subsubsection{Struktura: \texttt{thereturn }}
 \subsubsection{Struktura: \texttt{thecom }}
 \subsubsection{Struktura: \texttt{comqueue }}
 \subsubsection{Funkce \texttt{void initializeQueue(commentQueue *queue)}}
@@ -53,7 +57,7 @@
 \par\noindent
 \textbf{Popis: }prida komentaaa kokot\\
 \par\noindent
-\subsubsection{Funkce \texttt{void printComments(FILE *file, commentQueue *queue)}}
+\subsubsection{Funkce \texttt{int printComments(FILE *file, commentQueue *queue)}}
 \textbf{Argumenty: }\verb"commentQueue * queue" -- fronta. \verb"FIlE *file" -- vystupni soubor. \\
 \par\noindent
 \textbf{Popis: }kokot\\
