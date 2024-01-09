@@ -3,96 +3,584 @@
 \usepackage[IL2]{fontenc}
 \usepackage[czech]{babel}
 \begin{document}
-\section{Programátorskáčřšěůřž dokumentace}
+\section{Programátorská dokumentace}
 \subsection{Modul \texttt{ccdoc.c}}
+\subsubsection{Funkce \texttt{void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename)}}
+\textbf{Argumenty: }\verb"fileQueue *fqueue" -- queue of files. \verb"fileQueue *usedFiles" -- queue of used files. \verb"char *filename" -- name of file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }This function is using for finding files in the filename file\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
 \subsubsection{Funkce \texttt{void findComments(commentQueue *queue, char *filename)}}
-\textbf{Argumenty: }\verb"commentQueue *queue" -- fronta souboru. \verb"char * filename" -- jmeno souboru. \\
+\textbf{Argumenty: }\verb"commentQueue *queue" -- queue of comments. \verb"char * filename" -- name of file. \\
 \par\noindent
-\textbf{Popis: }Funkce pro nacteni souboru a zpracovani komentaru a kokotu\\
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
 \par\noindent
-\textbf{Brief: } najde komentare.\\
+\textbf{Popis: }this function is using to find comments in filename file\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsubsection{Funkce \texttt{int main(int argc, char *argv[])}}
-\textbf{Argumenty: }\verb"int argc" -- pocet argumentu. \verb"char * argv[]" -- pole argumentu. \\
+\textbf{Argumenty: }\verb"int argc" -- number of arguments. \verb"char * argv[]" -- array of arguments. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
 \par\noindent
 \textbf{Popis: }main function of the program\\
 \par\noindent
-\textbf{Autor: } \textcopyright{} Filip Křenek\\
+\textbf{Brief: }nebyl nalezen.\\
 \par\noindent
-\textbf{Verze: } 1.0\\
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsection{Modul \texttt{filequeue}}
 \subsubsection{Struktura: \texttt{thefileName}}
+\textbf{Popis: }structure of filename\\
+\par\noindent
 \subsubsection{Struktura: \texttt{thefileQueue}}
-\subsubsection{Funkce \texttt{void addFilename(fileQueue *queue, char *newname)}}
-\textbf{Popis: }pridani souboru do fronty a\\
-\par\noindent
-\subsubsection{Funkce \texttt{void printFileQueue(fileQueue *queue)}}
-\textbf{Popis: }vypise frontu souboru vypsani fronty\\
-\par\noindent
-\subsubsection{Funkce \texttt{void freeFileQueue(fileQueue *queue)}}
-\textbf{Popis: }uvoleneni fronty uvgv\\
-\par\noindent
-\subsubsection{Funkce \texttt{char* peek(fileQueue *queue)}}
-\textbf{Popis: }vybere soubor vybere prvni soubor\\
-\par\noindent
-\subsubsection{Funkce \texttt{int is\_file\_set(fileQueue *queue, char const *newname)}}
-\textbf{Popis: }je soubor ulozedddddn je soubor ulozen\\
+\textbf{Popis: }structure of file queue\\
 \par\noindent
 \subsubsection{Funkce \texttt{void initializeFileQueue(fileQueue *queue)}}
-\textbf{Popis: }init fronty\\
+\textbf{Argumenty: }\verb"fileQueue *queue" -- file queue. \verb"char *newname" -- name of the file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is initializing filequeue\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void addFilename(fileQueue *queue, char *newname)}}
+\textbf{Argumenty: }\verb"fileQueue *queue" -- file queue. \verb"char *newname" -- name of the file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is adding new filename to the queue\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void printFileQueue(fileQueue *queue)}}
+\textbf{Argumenty: }\verb"fileQueue *queue" -- file queue. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing every name of file\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void freeFileQueue(fileQueue *queue)}}
+\textbf{Argumenty: }\verb"fileQueue *queue" -- file queue. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is freeing the queue\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* peek(fileQueue *queue)}}
+\textbf{Argumenty: }\verb"fileQueue *queue" -- file queue. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is peeking first name of file\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{int is\_file\_set(fileQueue *queue, char const *newname)}}
+\textbf{Argumenty: }\verb"fileQueue *queue" -- file queue. \verb"char const" -- *newname name of file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is chekcing if newname is already in queue\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsection{Modul \texttt{comment}}
 \subsubsection{Struktura: \texttt{theparam }}
-\subsubsection{Struktura: \texttt{thereturn }}
-\subsubsection{Struktura: \texttt{thecom }}
-\subsubsection{Struktura: \texttt{comqueue }}
-\subsubsection{Funkce \texttt{void initializeQueue(commentQueue *queue)}}
-\textbf{Argumenty: }\verb"commentQueue * queue" -- fronta. \\
+\textbf{Popis: }strukture of param line \\
 \par\noindent
-\textbf{Popis: }kokotbbb kokot\\
+\subsubsection{Struktura: \texttt{thereturn }}
+\textbf{Popis: }structure of return line\\
+\par\noindent
+\subsubsection{Struktura: \texttt{thecom }}
+\textbf{Popis: }structure of comment \\
+\par\noindent
+\subsubsection{Struktura: \texttt{comqueue }}
+\textbf{Popis: }structure of comment queue\\
+\par\noindent
+\subsubsection{Funkce \texttt{void initializeQueue(commentQueue *queue)}}
+\textbf{Argumenty: }\verb"commentQueue *queue" -- queue of comments. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is using to initialize queue\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsubsection{Funkce \texttt{void add(commentQueue *queue, char textt[])}}
-\textbf{Argumenty: }\verb"commentQueue *queue" -- fronta. \verb"char *text" -- kokot. \\
+\textbf{Argumenty: }\verb"commentQueue *queue" -- queue of comments. \\
 \par\noindent
-\textbf{Popis: }prida komentaaa kokot\\
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is adding new comment\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsubsection{Funkce \texttt{int printComments(FILE *file, commentQueue *queue)}}
-\textbf{Argumenty: }\verb"commentQueue * queue" -- fronta. \verb"FIlE *file" -- vystupni soubor. \\
+\textbf{Argumenty: }\verb"commentQueue * queue" -- queue of comments. \verb"FIlE *file" -- output file. \\
 \par\noindent
-\textbf{Popis: }kokot\\
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing comments to output file\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void freeQueue(commentQueue *queue)}}
+\textbf{Argumenty: }\verb"commentQueue *queue" -- queue of comments. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function frees the queue\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsubsection{Funkce \texttt{void process(comment *current)}}
-\textbf{Popis: }kokotbbb process com\\
+\textbf{Argumenty: }\verb"comment *current" -- current comment. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is processing current comment\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsubsection{Funkce \texttt{void processComments(commentQueue *queue)}}
-\textbf{Argumenty: }\verb"commentQueue * queue" -- fronta souborufewefwfew. \\
+\textbf{Argumenty: }\verb"commentQueue *queue" -- queue of comments . \\
 \par\noindent
-\textbf{Popis: }zprocesuje veechny komenty\\
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is processing every comment\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsubsection{Funkce \texttt{void mergeComments(commentQueue *queue)}}
-\textbf{Popis: }spojeni komenraru\\
+\textbf{Argumenty: }\verb"commentQueue *queue" -- queue of comments. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is merging comments\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void add\_param(comment *current, const char *line)}}
+\textbf{Argumenty: }\verb"comment *current" -- current comment. \verb"const char" -- *line param line. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is add new param line\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void add\_return(comment *current, const char *line)}}
+\textbf{Argumenty: }\verb"comment *current" -- current comment. \verb"const char" -- *line return line. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is adding new return line\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsection{Modul \texttt{check}}
-\subsubsection{Funkce \texttt{int is\_file\_exist(char *filename)}}
-\textbf{Popis: }existuje soubor\\
-\par\noindent
 \subsubsection{Funkce \texttt{int linecheck(const char *str, const char *prefix)}}
-\textbf{Popis: }Funkce pro kontrolu bilich zanku kokotpica\\
+\textbf{Argumenty: }\verb"const char" -- *str line . \verb"const char" -- *prefix prefix. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is checking if after the prefix is only whitespaces\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{int is\_file\_exist(char *filename)}}
+\textbf{Argumenty: }\verb"char *filename" -- name of file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is checking if file existing\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsection{Modul \texttt{modifier}}
-\subsubsection{Funkce \texttt{char* extractExtension(char *filename)}}
-\textbf{Argumenty: }\verb"char *filename" -- jmeno souboru. \\
-\par\noindent
-\textbf{Popis: }kokotipica kokotipicaddd\\
-\par\noindent
 \subsubsection{Funkce \texttt{void remove\_spaces(char *text)}}
-\textbf{Popis: }funkce pro smazani bilich znaku. kokotpica\\
+\textbf{Argumenty: }\verb"char *text" -- text . \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is removing spaces of text\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* removeQuotes(char *str)}}
+\textbf{Argumenty: }\verb"char *str" -- string with quotes. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is rmoving quotes of str\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* extract\_path(char *filename)}}
+\textbf{Argumenty: }\verb"char *filename" -- name of file . \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is extracting path of filename\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* connect\_path(char *path, char *filename)}}
+\textbf{Argumenty: }\verb"char *path" -- path to file. \verb"char *filename" -- name of file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is connecting path to filename\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* extractExtension(char *filename)}}
+\textbf{Argumenty: }\verb"char *filename" -- name of file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is extraction extension of filename\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{char* trim\_white\_spaces(char *input)}}
+\textbf{Argumenty: }\verb"char *input" -- string with whitespaces. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this fucntion is trimmig whitespace of input\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \subsection{Modul \texttt{printer}}
-\subsubsection{Funkce \texttt{void print\_module(FILE *file, char *module)}}
-\textbf{Argumenty: }\verb"char * module" -- nazev modulu co ma byt vypsan. \\
+\subsubsection{Funkce \texttt{void printLaTeXFormatted(FILE *file, const char* functionName)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"const char*" -- functionName string that is checking. \\
 \par\noindent
-\textbf{Popis: }Funkce pro vypsani modulu\\
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is checing for underscore to escape it \\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_module(FILE *file, char *filename)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"char *filename" -- name of the module. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing module\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_packages(FILE *file)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing packages\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_section(FILE *file)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing initial section\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_subsubsection(FILE *file, char *title, char *content)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"char *title" -- name of subsection. \verb"char *content" -- content of subsection. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing subsections\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_textbf(FILE *file, char *title, char *content)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"char *title" -- title of textbf. \verb"char *content" -- content of textbf. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing textbf\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void printf\_verb(FILE *file, char* paramLine)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"char* paramLine" -- parameter line. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing formated arguments\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void printf\_return(FILE *file, char *returnLine)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"char *returnLine" -- return line. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing return line formated\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_end(FILE *file)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing endfile\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_space(FILE *file)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this fucntion is printig space\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
+\par\noindent
+\subsubsection{Funkce \texttt{void print\_module(FILE *file, char *module)}}
+\textbf{Argumenty: }\verb"FILE *file" -- output file. \verb"char *filename" -- name of the module. \\
+\par\noindent
+\textbf{Návratová Hodnota: }nebyla nalezena.\\
+\par\noindent
+\textbf{Popis: }this function is printing module\\
+\par\noindent
+\textbf{Brief: }nebyl nalezen.\\
+\par\noindent
+\textbf{Detaily: }nebyly nalezeny.\\
+\par\noindent
+\textbf{Autor: }nebyl nalezen.\\
+\par\noindent
+\textbf{Verze: }nebyla nalezena.\\
 \par\noindent
 \end{document}

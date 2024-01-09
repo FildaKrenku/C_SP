@@ -8,7 +8,10 @@
 #include "comment.h"
 
 /**
- * init fronty
+ * this function is initializing filequeue
+ *
+ * @param fileQueue *queue file queue
+ * @param char *newname name of the file
  */
 void initializeFileQueue(fileQueue *queue) {
 	/* arguments check */
@@ -21,6 +24,12 @@ void initializeFileQueue(fileQueue *queue) {
 	queue->end = NULL;
 }
 
+/**
+ * this function is adding new filename to the queue
+ *
+ * @param fileQueue *queue file queue
+ * @param char *newname name of the file
+ */
 void addFilename(fileQueue *queue, char *newname) {
 	/* arguments check */
 	if (!queue || !newname) {
@@ -70,7 +79,9 @@ void addFilename(fileQueue *queue, char *newname) {
 }
 
 /**
- * vypsani fronty
+ * this function is printing every name of file
+ *
+ * @param fileQueue *queue file queue
  */
 void printFileQueue(fileQueue *queue) {
 	fileName *current;
@@ -92,7 +103,9 @@ void printFileQueue(fileQueue *queue) {
 }
 
 /**
- * uvgv
+ * this function is freeing the queue
+ *
+ * @param fileQueue *queue file queue
  */
 void freeFileQueue(fileQueue *queue) {
 	fileName *current;
@@ -119,7 +132,9 @@ void freeFileQueue(fileQueue *queue) {
 
 
 /**
- * vybere prvni soubor
+ * this function is peeking first name of file
+ *
+ * @param fileQueue *queue file queue
  */
 char* peek(fileQueue *queue) {
 	char *firstname;
@@ -157,7 +172,10 @@ char* peek(fileQueue *queue) {
 }
 
 /**
- * je soubor ulozen
+ * this function is chekcing if newname is already in queue
+ *
+ * @param fileQueue *queue file queue
+ * @param char const *newname name of file
  */
 int is_file_set(fileQueue *queue, char const *newname) {
 	fileName *current;

@@ -20,32 +20,50 @@ typedef struct thefileQueue{
 	struct thefileName *end;
 } fileQueue;
 
+
+/**
+ * this function is initializing filequeue
+ *
+ * @param fileQueue *queue file queue
+ * @param char *newname name of the file
+ */
 void initializeFileQueue(fileQueue *queue);
 
 
 /**
- * pridani souboru do
- * fronty a
+ * this function is adding new filename to the queue
+ *
+ * @param fileQueue *queue file queue
+ * @param char *newname name of the file
  */
 void addFilename(fileQueue *queue, char *newname);
 
 /**
- * vypise frontu souboru
+ * this function is printing every name of file
+ *
+ * @param fileQueue *queue file queue
  */
 void printFileQueue(fileQueue *queue);
 
 /**
- * uvoleneni fronty
+ * this function is freeing the queue
+ *
+ * @param fileQueue *queue file queue
  */
 void freeFileQueue(fileQueue *queue);
 
 /**
- * vybere soubor
+ * this function is peeking first name of file
+ *
+ * @param fileQueue *queue file queue
  */
 char* peek(fileQueue *queue);
 
 /**
- * je soubor ulozedddddn
+ * this function is chekcing if newname is already in queue
+ *
+ * @param fileQueue *queue file queue
+ * @param char const *newname name of file
  */
 int is_file_set(fileQueue *queue, char const *newname);
 

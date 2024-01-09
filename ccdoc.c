@@ -26,7 +26,13 @@
 
 
 
-
+/**
+ * This function is using for finding files in the filename file
+ *
+ * @param fileQueue *fqueue queue of files
+ * @param fileQueue *usedFiles queue of used files
+ * @param char *filename name of file
+ */
 void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 	
 	char *inc;
@@ -152,14 +158,10 @@ void findFiles(fileQueue *fqueue, fileQueue *usedFiles, char *filename) {
 
 
 /**
- * @brief najde komentare.
+ * this function is using to find comments in filename file
  *
- * Funkce pro nacteni souboru a zpracovani
- * komentaru a kokotu
- *
- * @param commentQueue *queue fronta souboru
- * @param char * filename jmeno souboru.
- * @return void nic.
+ * @param commentQueue *queue queue of comments
+ * @param char * filename name of file
  */
 void findComments(commentQueue *queue, char *filename) {
 	char line[LINE_LEN];
@@ -218,11 +220,8 @@ void findComments(commentQueue *queue, char *filename) {
 /**
  * main function of the program
  *
- * @param int argc pocet argumentu
- * @param char * argv[] pole argumentu.
- *
- * @author \textcopyright{} Filip Křenek
- * @version 1.0
+ * @param int argc number of arguments
+ * @param char * argv[] array of arguments
  */
 int main(int argc, char *argv[]) {
 	char *inputFile = NULL;	
@@ -421,9 +420,7 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			free(dotC_file);	
-		}
-		
-		
+		}	
 	}
     
     /* tex file open check */
@@ -537,7 +534,7 @@ int main(int argc, char *argv[]) {
   	free(fqueue);
   	free(usedFiles);
 
-   	printf("hotovo");
+
     return exit_code;
 }
 

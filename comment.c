@@ -23,7 +23,9 @@
 
 
 /**
- * kokot
+ * this function is using to initialize queue
+ *
+ * @param commentQueue *queue queue of comments
  */
 void initializeQueue(commentQueue *queue) {
 	/* argument check */
@@ -39,10 +41,9 @@ void initializeQueue(commentQueue *queue) {
 
 
 /**
- * kokot
+ * this function is adding new comment
  *
- * @param char *text kokot
- * @param commentQueue *queue fronta
+ * @param commentQueue *queue queue of comments
  */
 void add(commentQueue *queue, char textt[]) {
 	comment *newComment;
@@ -104,6 +105,11 @@ void add(commentQueue *queue, char textt[]) {
 }
 
 
+/**
+ * this function is processing every comment
+ *
+ * @param commentQueue *queue queue of comments 
+ */
 void processComments(commentQueue *queue) {
 	comment *current;
 	
@@ -125,7 +131,12 @@ void processComments(commentQueue *queue) {
 }
 
 
-
+/**
+ * this function is printing comments to output file
+ *
+ * @param commentQueue * queue queue of comments
+ * @param FIlE *file output file
+ */
 int printComments(FILE *file, commentQueue *queue) {
 	comment *current;
 	paramLine *par;
@@ -148,22 +159,36 @@ int printComments(FILE *file, commentQueue *queue) {
     	
     	if(current->struct_head != NULL){
     		print_subsubsection(file, "Struktura: ",current->struct_head);
-    		/*
-    		printf("STRUKTURA: %s\n",current->struct_head);
-    		*/		
+    		
+			if(current->description != NULL){
+				print_textbf(file, POPIS, current->description);
+				print_space(file);
+				/*
+				printf("POPIS: %s\n",current->description);
+				*/
+			}
+			else {
+				print_textbf(file, POPIS, "nebyl nalezen.");
+				print_space(file);
+			}	
 		}
     
  	
 		if(current->head != NULL){
 			print_subsubsection(file, FUNC, current->head);
+			/*
 			printf("FUNKCE: %s\n",current->head);
-			
+			*/
 			if(current->param != NULL) {
 				par = current->param;
+				/*
 				printf("ARGUMENTY:");
+				*/
 				fprintf(file, "\\textbf{%s}", ARGUMENTY);
     			while (par != NULL) {
+    				/*
     				printf("%s", par->line);
+    				*/
     				
     				printf_verb(file, par->line);
     				
@@ -171,57 +196,98 @@ int printComments(FILE *file, commentQueue *queue) {
     			}
     			fprintf(file, "\\\\\n");
     			print_space(file);
+    			/*
     			printf("\n");
+    			*/
+			}
+			else {
+				print_textbf(file, ARGUMENTY, "nebyly nalezeny.");
+				print_space(file);
 			}
 			if(current->return_val != NULL){
 				ret = current->return_val;
-				/*
+				
 				fprintf(file, "\\textbf{%s}", RET);
-				printf_verb(file, current->return_val);
-				fprintf(file, "\\\\\n");
-    			print_space(file);
-    			*/
+				
+				
+    			
+    			
 				printf("RETURN:");
 					while (ret != NULL) {
     				
     				printf("%s", ret->line);
-    				/*
-    				printf_verb(file, ret->line);
-    				*/
+    				
+    				printf_return(file, ret->line);
+    				
         			ret = ret->next;
     			}
+    			fprintf(file, "\\\\\n");
+    			print_space(file);
+    			/*
     			printf("\n");
+    			*/
+			}
+			else {
+				print_textbf(file, RET, "nebyla nalezena.");
+				print_space(file);
 			}
 			if(current->description != NULL){
 				print_textbf(file, POPIS, current->description);
 				print_space(file);
-				
+				/*
 				printf("POPIS: %s\n",current->description);
+				*/
+			}
+			else {
+				print_textbf(file, POPIS, "nebyl nalezen.");
+				print_space(file);
 			}
 			if(current->brief != NULL){
 				print_textbf(file, BRIEF, current->brief);
 				print_space(file);
-				
-				printf("Brief:%s\n",current->brief);	
+				/*
+				printf("Brief:%s\n",current->brief);
+				*/	
+			}
+			else {
+				print_textbf(file, BRIEF, "nebyl nalezen.");
+				print_space(file);
 			}
 			if(current->details != NULL){
 				print_textbf(file, DET, current->details);
 				print_space(file);
-				
-				printf("Version:%s\n",current->details);	
+				/*
+				printf("Version:%s\n",current->details);
+				*/	
+			}
+			else {
+				print_textbf(file, DET, "nebyly nalezeny.");
+				print_space(file);
 			}
 			if(current->author != NULL){
 				print_textbf(file, AUTOR, current->author);
 				print_space(file);
-				printf("Autor:%s\n",current->author);	
+				/*
+				printf("Autor:%s\n",current->author);
+				*/	
+			}
+			else {
+				print_textbf(file, AUTOR, "nebyl nalezen.");
+				print_space(file);
 			}
 			if(current->version != NULL){
 				print_textbf(file, VERZE, current->version);
 				print_space(file);
-				printf("Version:%s\n",current->version);	
+				/*
+				printf("Version:%s\n",current->version);
+				*/	
+			}
+			else {
+				print_textbf(file, VERZE, "nebyla nalezena.");
+				print_space(file);
 			}
 			
-			printf("\n");
+		
 			
 			if ((current->description == NULL || current->brief == NULL || current->return_val == NULL) && current->struct_head == NULL) {
 				cur_exit = 3;
@@ -245,7 +311,11 @@ int printComments(FILE *file, commentQueue *queue) {
 }
 
 
-/* Uvolnění paměti použité pro komentáře ve frontě */
+/**
+ * this function frees the queue
+ *
+ * @param commentQueue *queue queue of comments
+ */
 void freeQueue(commentQueue *queue) {
 	comment *current;
     comment *next;
@@ -306,7 +376,9 @@ void freeQueue(commentQueue *queue) {
 
 
 /**
- * process com
+ * this function is processing current comment
+ *
+ * @param comment *current current comment
  */
 void process(comment *current) {
 	char *line;
@@ -490,7 +562,11 @@ void process(comment *current) {
 }
 
 
-
+/**
+ * this function is merging comments
+ *
+ * @param commentQueue *queue queue of comments
+ */
 void mergeComments(commentQueue *queue) {
 	
     comment *current;
@@ -754,6 +830,13 @@ void mergeComments(commentQueue *queue) {
     }
 }
 
+
+/**
+ * this function is add new param line
+ *
+ * @param comment *current current comment
+ * @param const char *line param line
+ */
 void add_param(comment *current, const char *line) {
 	paramLine *newParamLine;
 	
@@ -801,7 +884,12 @@ void add_param(comment *current, const char *line) {
     }
 }
 
-
+/**
+ * this function is adding new return line
+ *
+ * @param comment *current current comment
+ * @param const char *line return line
+ */
 void add_return(comment *current, const char *line) {
 	returnLine *newReturn;
 	returnLine *last;

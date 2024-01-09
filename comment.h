@@ -53,49 +53,70 @@ typedef struct comqueue {
 
 
 /**
- * kokotbbb
+ * this function is using to initialize queue
  *
- * @param commentQueue * queue fronta
+ * @param commentQueue *queue queue of comments
  */
 void initializeQueue(commentQueue *queue);
 
 
 /**
- * prida komentaaa
+ * this function is adding new comment
  *
- * @param commentQueue *queue fronta
+ * @param commentQueue *queue queue of comments
  */
 void add(commentQueue *queue, char textt[]);
 
 /**
- * kokot
+ * this function is printing comments to output file
  *
- * @param commentQueue * queue fronta
- * @param FIlE *file vystupni soubor
+ * @param commentQueue * queue queue of comments
+ * @param FIlE *file output file
  */
 int printComments(FILE *file, commentQueue *queue);
 
+/**
+ * this function frees the queue
+ *
+ * @param commentQueue *queue queue of comments
+ */
 void freeQueue(commentQueue *queue);
 
 /**
- * kokotbbb
+ * this function is processing current comment
+ *
+ * @param comment *current current comment
  */
 void process(comment *current);
 
 /**
- * zprocesuje veechny komenty
+ * this function is processing every comment
  *
- * @param commentQueue * queue fronta souborufewefwfew
+ * @param commentQueue *queue queue of comments 
  */
 void processComments(commentQueue *queue);
 
 /**
- * spojeni komenraru
+ * this function is merging comments
+ *
+ * @param commentQueue *queue queue of comments
  */
 void mergeComments(commentQueue *queue);
 
+/**
+ * this function is add new param line
+ *
+ * @param comment *current current comment
+ * @param const char *line param line
+ */
 void add_param(comment *current, const char *line);
 
+/**
+ * this function is adding new return line
+ *
+ * @param comment *current current comment
+ * @param const char *line return line
+ */
 void add_return(comment *current, const char *line);
 
 

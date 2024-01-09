@@ -14,7 +14,12 @@
 
 
 
-
+/**
+ * this function is checing for underscore to escape it 
+ *
+ * @param FILE *file output file
+ * @param const char* functionName string that is checking
+ */
 void printLaTeXFormatted(FILE *file, const char* functionName) {
     int i = 0;
     
@@ -38,9 +43,10 @@ void printLaTeXFormatted(FILE *file, const char* functionName) {
 
 
 /**
- * Funkce pro vypsani modulu
+ * this function is printing module
  *
- * @param char * module nazev modulu co ma byt vypsan.
+ * @param FILE *file output file
+ * @param char *filename name of the module
  */
 void print_module(FILE *file, char *module) {
 	char *win;
@@ -78,6 +84,12 @@ void print_module(FILE *file, char *module) {
 	fprintf(file,"}}\n");
 }
 
+
+/**
+ * this function is printing packages
+ *
+ * @param FILE *file output file
+ */
 void print_packages(FILE *file) {
 	
 	/* arguments check */
@@ -93,6 +105,11 @@ void print_packages(FILE *file) {
 }
 
 
+/**
+ * this function is printing initial section
+ *
+ * @param FILE *file output file
+ */
 void print_section(FILE *file) {
 	
 	/* arguments check */
@@ -103,10 +120,19 @@ void print_section(FILE *file) {
 	
 	fprintf(file, "\\documentclass[12pt, a4paper]{article}\n");
 	print_packages(file);
-	fprintf(file,"\\begin{document}\n\\section{Programátorskáčřšěůřž dokumentace}\n");
+	fprintf(file,"\\begin{document}\n\\section{Programátorská dokumentace}\n");
 	
 }
 
+
+
+/**
+ * this function is printing subsections
+ *
+ * @param FILE *file output file
+ * @param char *title name of subsection
+ * @param char *content content of subsection
+ */
 void print_subsubsection(FILE *file, char *title, char *content) {
 	
 	/* arguments check */
@@ -125,6 +151,14 @@ void print_subsubsection(FILE *file, char *title, char *content) {
 	
 }
 
+
+/**
+ * this function is printing textbf
+ *
+ * @param FILE *file output file
+ * @param char *title title of textbf
+ * @param char *content content of textbf
+ */
 void print_textbf(FILE *file, char *title, char *content) {
 	/* arguments check */
 	if (!file || !title || !content) {
@@ -138,6 +172,13 @@ void print_textbf(FILE *file, char *title, char *content) {
 	fprintf(file, "\\\\\n");
 }
 
+
+/**
+ * this function is printing formated arguments
+ *
+ * @param FILE *file output file
+ * @param char* paramLine parameter line
+ */
 void printf_verb(FILE *file, char* paramLine) {
 	char datatype[50];
     char point[5];
@@ -154,6 +195,7 @@ void printf_verb(FILE *file, char* paramLine) {
 	}
 
     /* checking if there is a star in the paramLine */
+    
     star = strchr(paramLine, '*');
     
 	/* finding the right format of param line and then printing it */
@@ -167,6 +209,7 @@ void printf_verb(FILE *file, char* paramLine) {
         if (sscanfResult == 3) {
             fprintf(file, "\\verb\"%s %s\" -- %s. ", datatype, dataname, dest);
         }
+        
     } else if (star && !isspace(star[-1])) {
         sscanfResult = sscanf(paramLine, "%s %s %[^.\n]", datatype, dataname, dest);
         if (sscanfResult == 3) {
@@ -180,9 +223,68 @@ void printf_verb(FILE *file, char* paramLine) {
     }
     
     
+    
 }
 
 
+/**
+ * this function is printing return line formated
+ *
+ * @param FILE *file output file
+ * @param char *returnLine return line
+ */
+void printf_return(FILE *file, char *returnLine) {
+	char datatype[50];
+    char point[5];
+    char dest[512];
+    int sscanfResult;
+    char* star;
+	
+	
+	/* arguments check */
+	if (!file || !returnLine) {
+		printf("Wrong arguments");
+    	exit(EXIT_FAILURE);
+	}
+
+    /* checking if there is a star in the returnLine */
+    star = strchr(returnLine, '*');
+    
+    /* finding the right format of param line and then printing it */
+    if (star && (star == returnLine || isspace(star[-1])) && isspace(star[1])) {
+        sscanfResult = sscanf(returnLine, "%s %s %[^.\n]", datatype, point, dest);
+        if (sscanfResult == 3) {
+            fprintf(file, "\\verb\"%s %s\" -- %s. ", datatype, point,dest);
+        }
+    } else if (star && !isspace(star[1])) {
+        sscanfResult = sscanf(returnLine, "%s %[^.\n]", datatype, dest);
+        if (sscanfResult == 2) {
+            fprintf(file, "\\verb\"%s\" -- %s. ", datatype, dest);
+        }
+        
+    } else if (star && !isspace(star[-1])) {
+        sscanfResult = sscanf(returnLine, "%s  %[^.\n]", datatype, dest);
+        if (sscanfResult == 2) {
+            fprintf(file, "\\verb\"%s\" -- %s. ", datatype, dest);
+        }
+    } else {
+        sscanfResult = sscanf(returnLine, "%s %[^.\n]", datatype, dest);
+        if (sscanfResult == 2) {
+            fprintf(file, "\\verb\"%s\" -- %s. ", datatype,  dest);
+        }
+    }
+    
+    
+    
+}
+
+
+
+/**
+ * this function is printing endfile
+ *
+ * @param FILE *file output file
+ */
 void print_end(FILE *file) {
 	/* arguments check */
 	if (!file) {
@@ -192,6 +294,12 @@ void print_end(FILE *file) {
 	fprintf(file, "\\end{document}\n");
 }
 
+
+/**
+ * this fucntion is printig space
+ *
+ * @param FILE *file output file
+ */
 void print_space(FILE *file) {
 	/* arguments check */
 	if (!file) {

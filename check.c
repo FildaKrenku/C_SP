@@ -8,9 +8,11 @@
 #include "check.h"
 
 
-/** 
- * Funkce pro kontrolu bilich zanku
- * kokotpica
+/**
+ * this function is checking if after the prefix is only whitespaces
+ *
+ * @param const char *str line 
+ * @param const char *prefix prefix
  */
 int linecheck(const char *str, const char *prefix) {
 	int prefixLen;
@@ -49,7 +51,11 @@ int linecheck(const char *str, const char *prefix) {
 }
 
 
-
+/**
+ * this function is checking if file existing
+ *
+ * @param char *filename name of file
+ */
 int is_file_exist(char *filename) {
 	FILE *f;
 	
